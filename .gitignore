@@ -218,5 +218,6 @@ NLP_project/models/
 NLP_project/pretrain_models/
 PRCV_HW1/.idea/
 PRCV_HW1/__pycache__/
+PRCV_HW1/dataset/att_faces/
 PRCV_HW1/dataset/att_faces.zip
 PRCV_HW2/.idea/
