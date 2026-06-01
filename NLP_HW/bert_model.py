@@ -12,9 +12,9 @@ class Config:
     def __init__(self):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 2e-5
-        self.weight_decay = 0.01
-        self.epochs = 20
+        self.lr = 1e-3
+        self.weight_decay = 5e-4
+        self.epochs = 10
         self.batch_size = 64
         self.num_workers = 4
         self.num_classes = 5
@@ -87,21 +87,27 @@ def train():
             all_labels.extend(labels.cpu().numpy())
 
         acc = accuracy_score(all_labels, all_predictions)
-        if acc > max_acc:
+        test_acc = test("dev", tokenizer, model)
+        if test_acc > max_acc:
             max_acc = acc
             model.save_pretrained(config.save_model_path)
             tokenizer.save_pretrained(config.save_model_path)
         print(f"Epoch [{epoch}/{config.epochs}] \tLoss: {total_loss / len(train_loader):.4f} \tAcc: {acc * 100:.2f}% \tTime: {time.time() - start_time:.2f}s")
 
+    print("Training Finished!")
+    test_acc = test("test", tokenizer, model)
+    print(f"Test Accuracy: {test_acc * 100:.2f}%.")
 
-def test():
+
+def test(data, tokenizer, model):
     config = Config()
-    pl.seed_everything(config.seed)
 
-    tokenizer = AutoTokenizer.from_pretrained(config.save_model_path)
-    model = AutoModelForSequenceClassification.from_pretrained(config.save_model_path, num_labels=config.num_classes).to(config.device)
-
-    test_data = TextDataset(pd.read_csv("dataset/test.csv"), tokenizer, config)
+    if data == "test":
+        test_data = TextDataset(pd.read_csv("dataset/test.csv"), tokenizer, config)
+    elif data == "dev":
+        test_data = TextDataset(pd.read_csv("dataset/dev.csv"), tokenizer, config)
+    else:
+        raise ValueError("Unknown dataset.")
     test_loader = DataLoader(test_data, batch_size=config.batch_size, shuffle=False, num_workers=config.num_workers)
 
     model.eval()
@@ -118,10 +124,10 @@ def test():
             all_predictions.extend(pred.cpu().numpy())
             all_labels.extend(labels.cpu().numpy())
         test_acc = accuracy_score(all_labels, all_predictions)
-        print(f"Test Accuracy: {test_acc * 100:.2f}%.")
+
+    return test_acc
 
 
 if __name__ == "__main__":
     train()
-    test()
 
