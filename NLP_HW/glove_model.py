@@ -80,7 +80,7 @@ class Model(nn.Module):
         print(f"Glove load successfully, total {len(words_vector)}.")
 
     def word2vec_init(self):
-        # self.load_glove()
+        self.load_glove()
         init_weight = pd.read_csv('model/glove.300d/word_vector.csv')['vector'].tolist()
         init_weight = [np.array(split_vector(v), dtype=np.float32) for v in init_weight]
         init_weight = np.array(init_weight)
@@ -88,11 +88,11 @@ class Model(nn.Module):
         self.embedding.weight.requires_grad = True
 
     def forward(self, x):
-        vec = self.embedding(x)                     # BxLxD
-        vec = vec.unsqueeze(1)                      # Bx1xLxD
+        x = self.embedding(x)                       # BxLxD
+        x = x.unsqueeze(1)                          # Bx1xLxD
         out = []
         for conv in self.conv:
-            h = self.relu(conv(vec)).squeeze(-1)    # Bx1xLxD -> BxCxLx1 -> BxCxL -> BxCx1 -> BxC
+            h = self.relu(conv(x)).squeeze(-1)      # Bx1xLxD -> BxCxLx1 -> BxCxL -> BxCx1 -> BxC
             h = F.max_pool1d(h, h.size(-1)).squeeze(-1)
             out.append(h)
         out = torch.cat(out, 1)
