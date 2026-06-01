@@ -1,0 +1,8 @@
+torch
+datasets
+transformers
+pytorch_lightning
+nltk
+scikit-learn
+accelerate>=1.1.0
+bitsandbytes
