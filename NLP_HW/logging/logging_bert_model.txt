@@ -1,0 +1,88 @@
+Seed set to 42
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 10654.95it/s]
+[transformers] BertForSequenceClassification LOAD REPORT from: model/bert-base-uncased
+Key                                        | Status     |
+-------------------------------------------+------------+-
+cls.seq_relationship.weight                | UNEXPECTED |
+cls.predictions.transform.dense.weight     | UNEXPECTED |
+cls.predictions.bias                       | UNEXPECTED |
+cls.seq_relationship.bias                  | UNEXPECTED |
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |
+cls.predictions.transform.dense.bias       | UNEXPECTED |
+classifier.weight                          | MISSING    |
+classifier.bias                            | MISSING    |
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Training layers:
+ - classifier.weight
+ - classifier.bias
+Start Training Classifier...
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.33it/s]
+Epoch [1/30] 	Loss: 1.5777 	Acc: 25.25% 	Time: 5.01s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.33it/s]
+Epoch [2/30] 	Loss: 1.5497 	Acc: 34.60% 	Time: 4.67s
+Epoch [3/30] 	Loss: 1.5279 	Acc: 32.61% 	Time: 3.90s
+Epoch [4/30] 	Loss: 1.5159 	Acc: 33.15% 	Time: 3.85s
+Epoch [5/30] 	Loss: 1.5022 	Acc: 31.97% 	Time: 3.87s
+Epoch [6/30] 	Loss: 1.4936 	Acc: 33.97% 	Time: 3.93s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.35it/s]
+Epoch [7/30] 	Loss: 1.4885 	Acc: 37.06% 	Time: 4.65s
+Epoch [8/30] 	Loss: 1.4822 	Acc: 34.88% 	Time: 3.76s
+Epoch [9/30] 	Loss: 1.4815 	Acc: 34.97% 	Time: 3.71s
+Epoch [10/30] 	Loss: 1.4742 	Acc: 35.33% 	Time: 3.75s
+Epoch [11/30] 	Loss: 1.4701 	Acc: 36.51% 	Time: 3.74s
+Epoch [12/30] 	Loss: 1.4673 	Acc: 34.42% 	Time: 3.78s
+Epoch [13/30] 	Loss: 1.4598 	Acc: 34.60% 	Time: 3.82s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.31it/s]
+Epoch [14/30] 	Loss: 1.4629 	Acc: 37.60% 	Time: 4.57s
+Epoch [15/30] 	Loss: 1.4506 	Acc: 36.78% 	Time: 3.79s
+Epoch [16/30] 	Loss: 1.4528 	Acc: 36.15% 	Time: 3.76s
+Epoch [17/30] 	Loss: 1.4443 	Acc: 36.88% 	Time: 3.86s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.40it/s]
+Epoch [18/30] 	Loss: 1.4416 	Acc: 38.24% 	Time: 4.62s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.37it/s]
+Epoch [19/30] 	Loss: 1.4394 	Acc: 38.33% 	Time: 4.65s
+Epoch [20/30] 	Loss: 1.4361 	Acc: 36.78% 	Time: 3.90s
+Epoch [21/30] 	Loss: 1.4393 	Acc: 35.88% 	Time: 3.84s
+Epoch [22/30] 	Loss: 1.4332 	Acc: 37.42% 	Time: 3.87s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.31it/s]
+Epoch [23/30] 	Loss: 1.4386 	Acc: 38.42% 	Time: 4.59s
+Epoch [24/30] 	Loss: 1.4343 	Acc: 35.51% 	Time: 3.89s
+Epoch [25/30] 	Loss: 1.4325 	Acc: 37.15% 	Time: 3.83s
+Epoch [26/30] 	Loss: 1.4280 	Acc: 37.42% 	Time: 3.82s
+Epoch [27/30] 	Loss: 1.4310 	Acc: 34.42% 	Time: 3.82s
+Epoch [28/30] 	Loss: 1.4301 	Acc: 37.42% 	Time: 3.82s
+Epoch [29/30] 	Loss: 1.4223 	Acc: 37.33% 	Time: 3.78s
+Epoch [30/30] 	Loss: 1.4227 	Acc: 38.06% 	Time: 3.82s
+Training Finished!
+Loading weights: 100%|██████████| 201/201 [00:00<00:00, 8370.95it/s]
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.37it/s]
+Epoch [1/20] 	Loss: 1.3796 	Acc: 43.12% 	Time: 11.67s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.30it/s]
+Epoch [2/20] 	Loss: 1.2224 	Acc: 46.56% 	Time: 11.53s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.35it/s]
+Epoch [3/20] 	Loss: 1.1161 	Acc: 47.15% 	Time: 11.44s
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.31it/s]
+Epoch [4/20] 	Loss: 0.9986 	Acc: 47.29% 	Time: 11.47s
+Epoch [5/20] 	Loss: 0.8591 	Acc: 45.70% 	Time: 10.70s
+Epoch [6/20] 	Loss: 0.6883 	Acc: 46.47% 	Time: 10.64s
+Epoch [7/20] 	Loss: 0.5041 	Acc: 46.43% 	Time: 10.69s
+Epoch [8/20] 	Loss: 0.3465 	Acc: 45.84% 	Time: 10.75s
+Epoch [9/20] 	Loss: 0.2366 	Acc: 45.07% 	Time: 10.78s
+Epoch [10/20] 	Loss: 0.1458 	Acc: 45.02% 	Time: 10.82s
+Epoch [11/20] 	Loss: 0.0911 	Acc: 44.43% 	Time: 10.77s
+Epoch [12/20] 	Loss: 0.0601 	Acc: 45.20% 	Time: 10.77s
+Epoch [13/20] 	Loss: 0.0414 	Acc: 44.52% 	Time: 10.73s
+Epoch [14/20] 	Loss: 0.0245 	Acc: 45.11% 	Time: 10.75s
+Epoch [15/20] 	Loss: 0.0164 	Acc: 44.39% 	Time: 10.76s
+Epoch [16/20] 	Loss: 0.0131 	Acc: 44.75% 	Time: 10.70s
+Epoch [17/20] 	Loss: 0.0166 	Acc: 44.93% 	Time: 10.70s
+Epoch [18/20] 	Loss: 0.0138 	Acc: 44.57% 	Time: 10.66s
+Epoch [19/20] 	Loss: 0.0149 	Acc: 45.29% 	Time: 10.68s
+Epoch [20/20] 	Loss: 0.0266 	Acc: 43.98% 	Time: 10.74s
+Training Finished!
+Loading weights: 100%|██████████| 201/201 [00:00<00:00, 8725.74it/s]
+Test Accuracy: 47.29%.

@@ -12,13 +12,13 @@ class Config:
     def __init__(self):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 1e-3
-        self.weight_decay = 5e-4
-        self.epochs = 10
+        self.lr = [1e-3, 5e-6]
+        self.weight_decay = [0.0001, 0.01]
+        self.epochs = [30, 20]
         self.batch_size = 64
         self.num_workers = 4
         self.num_classes = 5
-        self.max_length = 50
+        self.max_length = 64
         self.model_path = 'model/bert-base-uncased'
         self.save_model_path = "model/bert_model"
 
@@ -54,22 +54,31 @@ def train():
     config = Config()
     pl.seed_everything(config.seed)
 
+    # freeze the weight of encoder, only train Classifier
     tokenizer = AutoTokenizer.from_pretrained(config.model_path)
     model = AutoModelForSequenceClassification.from_pretrained(config.model_path, num_labels=config.num_classes).to(config.device)
+
+    for name, param in model.named_parameters():
+        if "classifier" in name:
+            param.requires_grad = True
+        else:
+            param.requires_grad = False
+    print("Training layers: ")
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            print(f" - {name}")
 
     train_data = TextDataset(pd.read_csv("dataset/train.csv"), tokenizer, config)
     train_loader = DataLoader(train_data, batch_size=config.batch_size, shuffle=True, num_workers=config.num_workers)
 
-    optimizer = optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
+    optimizer = optim.AdamW(model.parameters(), lr=config.lr[0], weight_decay=config.weight_decay[0])
 
-    print("Start Training...")
+    print("Start Training Classifier...")
     model.train()
     max_acc = 0
-    for epoch in range(1, config.epochs + 1):
+    for epoch in range(1, config.epochs[0] + 1):
         start_time = time.time()
         total_loss = 0
-        all_predictions = []
-        all_labels = []
         for batch in train_loader:
             input_ids = batch['input_ids'].to(config.device)
             attention_mask = batch['attention_mask'].to(config.device)
@@ -82,19 +91,57 @@ def train():
             optimizer.step()
 
             total_loss += loss.item()
-            pred = torch.argmax(outputs.logits, dim=-1)
-            all_predictions.extend(pred.cpu().numpy())
-            all_labels.extend(labels.cpu().numpy())
 
-        acc = accuracy_score(all_labels, all_predictions)
         test_acc = test("dev", tokenizer, model)
+
         if test_acc > max_acc:
-            max_acc = acc
+            max_acc = test_acc
             model.save_pretrained(config.save_model_path)
             tokenizer.save_pretrained(config.save_model_path)
-        print(f"Epoch [{epoch}/{config.epochs}] \tLoss: {total_loss / len(train_loader):.4f} \tAcc: {acc * 100:.2f}% \tTime: {time.time() - start_time:.2f}s")
+
+        print(f"Epoch [{epoch}/{config.epochs[0]}] \tLoss: {total_loss / len(train_loader):.4f} \tAcc: {test_acc * 100:.2f}% \tTime: {time.time() - start_time:.2f}s")
 
     print("Training Finished!")
+
+    # train Model
+    tokenizer = AutoTokenizer.from_pretrained(config.save_model_path)
+    model = AutoModelForSequenceClassification.from_pretrained(config.save_model_path, num_labels=config.num_classes).to(config.device)
+
+    optimizer = optim.AdamW(model.parameters(), lr=config.lr[1], weight_decay=config.weight_decay[1])
+
+    model.train()
+    max_acc = 0
+    for epoch in range(1, config.epochs[1] + 1):
+        start_time = time.time()
+        total_loss = 0
+        for batch in train_loader:
+            input_ids = batch['input_ids'].to(config.device)
+            attention_mask = batch['attention_mask'].to(config.device)
+            labels = batch['labels'].to(config.device)
+
+            optimizer.zero_grad()
+            outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
+            loss = outputs.loss
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+
+        test_acc = test("dev", tokenizer, model)
+
+        if test_acc > max_acc:
+            max_acc = test_acc
+            model.save_pretrained(config.save_model_path)
+            tokenizer.save_pretrained(config.save_model_path)
+
+        print(f"Epoch [{epoch}/{config.epochs[1]}] \tLoss: {total_loss / len(train_loader):.4f} \tAcc: {test_acc * 100:.2f}% \tTime: {time.time() - start_time:.2f}s")
+
+    print("Training Finished!")
+
+    # test
+    tokenizer = AutoTokenizer.from_pretrained(config.save_model_path)
+    model = AutoModelForSequenceClassification.from_pretrained(config.save_model_path, num_labels=config.num_classes).to(config.device)
+
     test_acc = test("test", tokenizer, model)
     print(f"Test Accuracy: {test_acc * 100:.2f}%.")
 
@@ -130,4 +177,3 @@ def test(data, tokenizer, model):
 
 if __name__ == "__main__":
     train()
-
