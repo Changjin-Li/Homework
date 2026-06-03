@@ -4,7 +4,7 @@ from datasets import load_dataset
 import pytorch_lightning as pl
 from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
 
-from utils import load_data, load_model, translate, bleu_score
+from utils import load_data, load_model, translate_iterate, bleu_score
 
 
 class Config:
@@ -24,6 +24,7 @@ class Config:
         self.max_output_length = 256
         self.max_length = 150
         self.num_test_data = 100
+        self.translate_iteration = 0
 
         self.tokenizer_kwargs = dict(
             truncation = True,
@@ -98,7 +99,7 @@ def test():
     config = Config()
     pl.seed_everything(config.seed)
 
-    tokenizer, model = load_model(config.save_model_path, config)
+    tokenizer, model = load_model(config.model_path, config)
     load_data(config.dataset_path, config)
 
     with open("data/test.json", 'r', encoding='utf-8') as f:
@@ -109,7 +110,7 @@ def test():
     for example in data:
         input_sentence = example["input"]
         output_sentence = example["output"]
-        response_sentence = translate(input_sentence, tokenizer, model, config)
+        response_sentence = translate_iterate(input_sentence, tokenizer, model, config)
         bleu = bleu_score(response_sentence, output_sentence)
         BLEU[0] += bleu["BLEU1"]
         BLEU[1] += bleu["BLEU2"]
@@ -120,5 +121,5 @@ def test():
 
 
 if __name__ == "__main__":
-    train()
+    # train()
     test()

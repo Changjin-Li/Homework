@@ -16,14 +16,18 @@ class Config:
         self.seed = 42
         self.lr = 1e-4
         self.weight_decay = 1e-6
-        self.epochs = 50
+        self.epochs = 20
         self.batch_size = 64
         self.num_workers = 4
-        self.dropout = 0.5
+        self.dropout = 0.2
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
-        self.save_path = "model/glove_model.pth"
+        self.save_path = "model/glove_model_rnn.pth"
+        # the param of RNN
+        self.num_layers = 1
+        self.hidden_size = 256
+        self.direction = 1
         # the param of sentence embedding
         self.sentence_length = 50
         self.embedding_dim = 300
@@ -36,8 +40,16 @@ class Model(nn.Module):
         self.config = Config()
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
         self.word2vec_init()
+        self.gru = nn.GRU(
+            input_size = self.config.embedding_dim,
+            hidden_size = self.config.hidden_size,
+            num_layers = self.config.num_layers,
+            dropout = self.config.dropout if self.config.num_layers > 1 else 0,
+            bidirectional = self.config.direction > 1,
+            batch_first = True,
+        )
         self.conv = nn.ModuleList([
-            nn.Conv2d(1, self.config.num_filters, (k, self.config.embedding_dim))
+            nn.Conv2d(1, self.config.num_filters, (k, self.config.hidden_size * self.config.direction))
             for k in self.config.filter_size
         ])
         self.fc = nn.Sequential(
@@ -81,7 +93,7 @@ class Model(nn.Module):
         print(f"Glove load successfully, total {len(words_vector)}.")
 
     def word2vec_init(self):
-        self.load_glove()
+        # self.load_glove()
         init_weight = pd.read_csv('model/glove.300d/word_vector.csv')['vector'].tolist()
         init_weight = [np.array(split_vector(v), dtype=np.float32) for v in init_weight]
         init_weight = np.array(init_weight)
@@ -90,10 +102,11 @@ class Model(nn.Module):
 
     def forward(self, x):
         x = self.embedding(x)                       # BxLxD
-        x = x.unsqueeze(1)                          # Bx1xLxD
+        x, _ = self.gru(x)                          # BxLxH
+        x = x.unsqueeze(1)                          # Bx1xLxH
         out = []
         for conv in self.conv:
-            h = self.relu(conv(x)).squeeze(-1)      # Bx1xLxD -> BxCxLx1 -> BxCxL -> BxCx1 -> BxC
+            h = self.relu(conv(x)).squeeze(-1)      # Bx1xLxH -> BxCxLx1 -> BxCxL -> BxCx1 -> BxC
             h = F.max_pool1d(h, h.size(-1)).squeeze(-1)
             out.append(h)
         out = torch.cat(out, 1)

@@ -87,6 +87,16 @@ def translate(text: str, tokenizer, model, config):
     return translated_text
 
 
+def translate_iterate(text: str, tokenizer, model, config):
+    translated_text = translate(text, tokenizer, model, config)
+
+    if config.translate_iteration > 0:
+        for _ in range(config.translate_iteration):
+            translated_text = translate(translated_text, tokenizer, model, config)
+
+    return translated_text
+
+
 def bleu_score(response, output):
     """
     Calculate the BLEU score between two sentences.

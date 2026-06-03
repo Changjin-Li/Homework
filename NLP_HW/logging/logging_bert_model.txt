@@ -85,4 +85,4 @@ Epoch [19/20] 	Loss: 0.0149 	Acc: 45.29% 	Time: 10.68s
 Epoch [20/20] 	Loss: 0.0266 	Acc: 43.98% 	Time: 10.74s
 Training Finished!
 Loading weights: 100%|██████████| 201/201 [00:00<00:00, 8725.74it/s]
-Test Accuracy: 47.29%.
+Test Accuracy: 47.81%.

@@ -1,6 +1,7 @@
 # 基于卷积神经网络的文本情感分类
 
 + Glove 预训练词向量下载地址：https://nlp.stanford.edu/projects/glove/
++ Bert 预训练模型：`bert-base-uncased`
 
 ## 模型评估
 
