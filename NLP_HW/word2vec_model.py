@@ -3,8 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pandas as pd
 import numpy as np
-from utils import split_sentence, process_dataset, train, test
-import pytorch_lightning as pl
+from utils import split_sentence, process_dataset, random_word_vector, train, test
 from gensim.models import Word2Vec
 
 
@@ -16,10 +15,10 @@ class Config:
         self.seed = 42
         self.lr = 1e-3
         self.weight_decay = 1e-5
-        self.epochs = 10
+        self.epochs = 50
         self.batch_size = 64
         self.num_workers = 4
-        self.dropout = 0.5
+        self.dropout = 0.2
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
@@ -52,14 +51,14 @@ class Model(nn.Module):
 
     def word2vec_init(self):
         word2vec(self.config.embedding_dim)
-        zero_init_weight = [0.] * self.config.embedding_dim
+        zero_init_weight = random_word_vector(self.config.embedding_dim, 0, 0)
         init_weight = [zero_init_weight]
         words_vector = Word2Vec.load('model/self_word2vec/word2vec.model').wv
         tokens = self.config.tokens2id.index.tolist()
         for token in tokens:
-            word_vector = words_vector[token] if token in words_vector else zero_init_weight
+            word_vector = words_vector[token] if token in words_vector else random_word_vector(self.config.embedding_dim, 0, 0.1)
             init_weight.append(word_vector)
-        init_weight = np.array(init_weight)
+        init_weight = np.array(init_weight, dtype=np.float32)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
         self.embedding.weight.requires_grad = True
 
@@ -99,7 +98,10 @@ def word2vec(vector_size):
 
 def main():
     config = Config()
-    pl.seed_everything(config.seed)
+    torch.manual_seed(config.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(config.seed)
+        torch.cuda.manual_seed_all(config.seed)
     train_data = process_dataset(config, 'dataset/train.csv')
     test_data  = process_dataset(config, 'dataset/test.csv')
     dev_data   = process_dataset(config, 'dataset/dev.csv')

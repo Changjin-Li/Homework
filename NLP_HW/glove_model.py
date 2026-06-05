@@ -4,7 +4,6 @@ import torch.nn.functional as F
 import csv
 import pandas as pd
 import numpy as np
-import pytorch_lightning as pl
 from utils import random_word_vector, split_vector, process_dataset, train, test
 
 
@@ -81,7 +80,7 @@ class Model(nn.Module):
         print(f"Glove load successfully, total {len(words_vector)}.")
 
     def word2vec_init(self):
-        self.load_glove()
+        # self.load_glove()
         init_weight = pd.read_csv('model/glove.300d/word_vector.csv')['vector'].tolist()
         init_weight = [np.array(split_vector(v), dtype=np.float32) for v in init_weight]
         init_weight = np.array(init_weight)
@@ -104,7 +103,10 @@ class Model(nn.Module):
 
 def main():
     config = Config()
-    pl.seed_everything(config.seed)
+    torch.manual_seed(config.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(config.seed)
+        torch.cuda.manual_seed_all(config.seed)
     train_data = process_dataset(config, 'dataset/train.csv')
     test_data  = process_dataset(config, 'dataset/test.csv')
     dev_data   = process_dataset(config, 'dataset/dev.csv')
