@@ -14,8 +14,8 @@ class Config:
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 1e-4
-        self.weight_decay = 1e-6
+        self.lr = 5e-4
+        self.weight_decay = 1e-5
         self.epochs = 20
         self.batch_size = 64
         self.num_workers = 4
@@ -25,9 +25,9 @@ class Config:
         self.num_filters = 100
         self.save_path = "model/glove_model_rnn.pth"
         # the param of RNN
-        self.num_layers = 1
-        self.hidden_size = 256
-        self.direction = 1
+        self.num_layers = 5
+        self.hidden_size = 64
+        self.direction = 2
         # the param of sentence embedding
         self.sentence_length = 50
         self.embedding_dim = 300
