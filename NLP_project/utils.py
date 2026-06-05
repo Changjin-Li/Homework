@@ -99,36 +99,21 @@ def translate_iterate(text: str, tokenizer, model, config):
     return translated_text
 
 
-def translate_with_prob(text: str, generate_text: str, tokenizer, model, config):
+def translate_with_conf(text: str, generate_text: str, tokenizer, model, config):
     model.eval()
     with torch.no_grad():
-        inputs = tokenizer(text, return_tensors="pt").to(config.device)
-        gen_ids = tokenizer(generate_text, return_tensors="pt").to(config.device).input_ids
+        inputs = tokenizer(text, truncation=True, return_tensors="pt").to(config.device)
+        labels = tokenizer(generate_text, truncation=True, return_tensors="pt").to(config.device)
 
-        outputs = model.generate(
-            inputs.input_ids,
-            output_scores=True,
-            return_dict_in_generate=True,
-            max_new_tokens=gen_ids.shape[1],
+        outputs = model(
+            input_ids=inputs.input_ids,
+            attention_mask=inputs.attention_mask,
+            labels=labels.input_ids,
         )
 
-        generated_ids = outputs.sequences[0]
-        scores = outputs.scores
+        confidence = -outputs.loss.item()
 
-        log_probs = []
-        for i, token_id in enumerate(generated_ids[1:]):
-            if i >= len(scores):
-                break
-            step_logits = scores[i][0]
-            step_log_probs = torch.log_softmax(step_logits, dim=-1)
-            selected_log_prob = step_log_probs[token_id].item()
-            log_probs.append(selected_log_prob)
-
-        if len(log_probs) == 0:
-            return 0
-        avg_log_prob = sum(log_probs) / len(log_probs)
-
-    return avg_log_prob
+    return confidence
 
 
 def bleu_score(response, output):
@@ -184,10 +169,10 @@ def Translate(
                     translated_text = response_text
 
         elif isinstance(text, str):
-            max_confidence = 0
+            max_confidence = -float("inf")
             for model in models:
                 response_text = translate_iterate(text, model[0], model[1], config)
-                confidence = translate_with_prob(text, response_text, model[0], model[1], config)
+                confidence = translate_with_conf(text, response_text, model[0], model[1], config)
                 if confidence > max_confidence:
                     max_confidence = confidence
                     translated_text = response_text

@@ -13,7 +13,10 @@ class Config:
         self.pretrain_model_path = "pretrain_models/Guwen_Translation"
         self.save_model_path = "models/Guwen_Translation_v1"
         self.dataset_path = "data/translation.json"
-        self.model_path = ["models/Guwen_Translation_v1", "models/Guwen_Translation_v2"]
+        self.model_path = [
+            "models/Guwen_Translation_v1",
+            "models/Guwen_Translation_v2",
+        ]
 
         self.seed = 42
         self.lr = 5e-6
@@ -156,7 +159,7 @@ def evaluate(mode = "self"):
         for example in data:
             bleu = bleu_score(example["response"], example["output"])
 
-            if bleu["BLEU1"] < 0.1:
+            if bleu["BLEU1"] < 0.3:
                 total_data -= 1
                 continue
 
@@ -171,5 +174,5 @@ def evaluate(mode = "self"):
 
 if __name__ == "__main__":
     # train()
-    evaluate("self")
+    evaluate("others")
 

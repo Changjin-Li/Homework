@@ -60,12 +60,12 @@ def test():
 def demo(text):
     config = Config()
     models = [load_model(config.model_path[i], config) for i in range(len(config.model_path))]
-    translated_text = Translate(text, models, config)
+    translated_text = Translate(text, models, config)[0]
     print(f"原文：{text}")
     print(f"译文：{translated_text}")
 
 
 if __name__ == '__main__':
-    test()
-    # demo("为将而降，降而为之效死以战，虽欲浣涤其污，而已缁之素，不可复白。")
+    # test()
+    demo("五年春正月，行幸犲山宫，遂如参合陂，观渔于延水，至宁川。三月，姚兴遣使朝贡。是岁，皇孙焘生。")
 
