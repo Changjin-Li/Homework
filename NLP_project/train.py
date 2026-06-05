@@ -120,8 +120,8 @@ def test():
     print(f"BLEU-1: {BLEU[0] / len(data): .4f}\tBLEU-2: {BLEU[1] / len(data): .4f}\tBLEU-3: {BLEU[2] / len(data): .4f}\tBLEU-4: {BLEU[3] / len(data): .4f}")
 
 
-def evaluate(type = "self"):
-    if type == "self":
+def evaluate(mode = "self"):
+    if mode == "self":
         config = Config()
         pl.seed_everything(config.seed)
 
@@ -135,7 +135,7 @@ def evaluate(type = "self"):
         BLEU = [0, 0, 0, 0]
 
         for example in data:
-            translated_text = Translate(example, models, config)
+            translated_text = Translate(example, models, config)[0]
             bleu = bleu_score(translated_text, example["output"])
 
             BLEU[0] += bleu["BLEU1"]
@@ -146,7 +146,7 @@ def evaluate(type = "self"):
         print(f"BLEU-1: {BLEU[0] / len(data): .4f}\tBLEU-2: {BLEU[1] / len(data): .4f}\t"
               f"BLEU-3: {BLEU[2] / len(data): .4f}\tBLEU-4: {BLEU[3] / len(data): .4f}")
 
-    elif type == "others":
+    elif mode == "others":
         with open("data/data.json", 'r', encoding='utf-8') as f:
             data = json.load(f)
 

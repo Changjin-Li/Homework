@@ -36,6 +36,14 @@ def test():
             "input": "吾群臣无有不骄侮之意者，唯赫子不失君臣之礼，是以先之。",
             "output": "我的大臣们都对我有高傲轻慢的意思，只有高赫没有失掉君臣之间的礼节，所以先奖赏他。"
         },
+        {
+            "input": "吾岁不熟二年矣，今又行数千里而以助魏，且奈何？",
+            "output": "我们燕国已经连续两年没有丰收了，现在又要远行几千里来救助魏国，那将会怎么样呢？"
+        },
+        {
+            "input": "燕不救魏，魏王折节割地，以国之半与秦，秦必去矣。",
+            "output": "如果燕国不解救魏国，魏国就会改变志节割让土地，把国家的半数土地割给秦国，秦国一定会撤兵。"
+        },
     ]
 
     print('-' * 100)
@@ -49,7 +57,6 @@ def test():
         print("-" * 100)
 
 
-
 def demo(text):
     config = Config()
     models = [load_model(config.model_path[i], config) for i in range(len(config.model_path))]
@@ -58,7 +65,7 @@ def demo(text):
     print(f"译文：{translated_text}")
 
 
-
 if __name__ == '__main__':
     test()
     # demo("为将而降，降而为之效死以战，虽欲浣涤其污，而已缁之素，不可复白。")
+

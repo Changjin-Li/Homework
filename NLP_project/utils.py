@@ -125,7 +125,7 @@ def translate_with_prob(text: str, generate_text: str, tokenizer, model, config)
             log_probs.append(selected_log_prob)
 
         if len(log_probs) == 0:
-            return float('-inf')
+            return 0
         avg_log_prob = sum(log_probs) / len(log_probs)
 
     return avg_log_prob
