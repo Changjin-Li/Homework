@@ -73,7 +73,7 @@ def process_dataset(config, file_path):
 
 
 def train(config, model, train_data: TextDataset, test_data: TextDataset):
-    optimizer = optim.Adam(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
+    optimizer = optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
     criterion = nn.CrossEntropyLoss()
     train_loader = data.DataLoader(train_data, batch_size=config.batch_size, shuffle=True, num_workers=config.num_workers)
 

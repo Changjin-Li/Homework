@@ -1,3 +1,4 @@
+Seed set to 42
 Loading data...
 Successfully load data from dataset/train.csv
 Loading data...
@@ -5,55 +6,55 @@ Successfully load data from dataset/test.csv
 Loading data...
 Successfully load data from dataset/dev.csv
 Start Training...
-[1 / 50] 	loss: 1.5671, 	acc: 32.61%, 	use_time: 2.81s
-[2 / 50] 	loss: 1.4990, 	acc: 35.42%, 	use_time: 2.41s
-[3 / 50] 	loss: 1.4385, 	acc: 36.78%, 	use_time: 2.14s
-[4 / 50] 	loss: 1.3816, 	acc: 39.96%, 	use_time: 2.28s
-[5 / 50] 	loss: 1.3252, 	acc: 40.05%, 	use_time: 2.80s
-[6 / 50] 	loss: 1.2744, 	acc: 41.14%, 	use_time: 2.42s
-[7 / 50] 	loss: 1.2240, 	acc: 41.05%, 	use_time: 2.37s
-[8 / 50] 	loss: 1.1793, 	acc: 41.60%, 	use_time: 1.98s
-[9 / 50] 	loss: 1.1375, 	acc: 43.32%, 	use_time: 4.62s
-[10 / 50] 	loss: 1.0955, 	acc: 42.96%, 	use_time: 2.26s
-[11 / 50] 	loss: 1.0587, 	acc: 43.69%, 	use_time: 2.24s
-[12 / 50] 	loss: 1.0255, 	acc: 43.96%, 	use_time: 2.16s
-[13 / 50] 	loss: 0.9805, 	acc: 43.51%, 	use_time: 2.11s
-[14 / 50] 	loss: 0.9380, 	acc: 44.78%, 	use_time: 2.05s
-[15 / 50] 	loss: 0.9070, 	acc: 44.32%, 	use_time: 2.32s
-[16 / 50] 	loss: 0.8730, 	acc: 44.32%, 	use_time: 2.06s
-[17 / 50] 	loss: 0.8356, 	acc: 44.23%, 	use_time: 2.42s
-[18 / 50] 	loss: 0.7975, 	acc: 44.69%, 	use_time: 2.81s
-[19 / 50] 	loss: 0.7587, 	acc: 45.23%, 	use_time: 2.55s
-[20 / 50] 	loss: 0.7289, 	acc: 44.05%, 	use_time: 3.02s
-[21 / 50] 	loss: 0.6948, 	acc: 44.96%, 	use_time: 3.49s
-[22 / 50] 	loss: 0.6557, 	acc: 43.96%, 	use_time: 5.26s
-[23 / 50] 	loss: 0.6280, 	acc: 43.96%, 	use_time: 2.49s
-[24 / 50] 	loss: 0.5872, 	acc: 43.96%, 	use_time: 2.40s
-[25 / 50] 	loss: 0.5588, 	acc: 43.78%, 	use_time: 2.38s
-[26 / 50] 	loss: 0.5249, 	acc: 44.41%, 	use_time: 2.36s
-[27 / 50] 	loss: 0.5055, 	acc: 44.32%, 	use_time: 2.44s
-[28 / 50] 	loss: 0.4729, 	acc: 43.32%, 	use_time: 3.05s
-[29 / 50] 	loss: 0.4471, 	acc: 43.60%, 	use_time: 3.06s
-[30 / 50] 	loss: 0.4249, 	acc: 43.87%, 	use_time: 3.42s
-[31 / 50] 	loss: 0.3970, 	acc: 43.87%, 	use_time: 3.02s
-[32 / 50] 	loss: 0.3735, 	acc: 44.32%, 	use_time: 3.45s
-[33 / 50] 	loss: 0.3548, 	acc: 43.69%, 	use_time: 3.00s
-[34 / 50] 	loss: 0.3324, 	acc: 43.51%, 	use_time: 5.41s
-[35 / 50] 	loss: 0.3142, 	acc: 43.69%, 	use_time: 2.80s
-[36 / 50] 	loss: 0.2934, 	acc: 43.87%, 	use_time: 2.40s
-[37 / 50] 	loss: 0.2748, 	acc: 43.60%, 	use_time: 2.50s
-[38 / 50] 	loss: 0.2581, 	acc: 43.42%, 	use_time: 2.40s
-[39 / 50] 	loss: 0.2484, 	acc: 43.05%, 	use_time: 2.32s
-[40 / 50] 	loss: 0.2280, 	acc: 44.23%, 	use_time: 2.37s
-[41 / 50] 	loss: 0.2123, 	acc: 42.96%, 	use_time: 2.32s
-[42 / 50] 	loss: 0.2067, 	acc: 42.51%, 	use_time: 2.79s
-[43 / 50] 	loss: 0.1922, 	acc: 42.78%, 	use_time: 2.52s
-[44 / 50] 	loss: 0.1815, 	acc: 43.60%, 	use_time: 2.33s
-[45 / 50] 	loss: 0.1715, 	acc: 43.23%, 	use_time: 2.31s
-[46 / 50] 	loss: 0.1626, 	acc: 42.96%, 	use_time: 2.29s
-[47 / 50] 	loss: 0.1545, 	acc: 43.05%, 	use_time: 5.15s
-[48 / 50] 	loss: 0.1441, 	acc: 43.60%, 	use_time: 2.58s
-[49 / 50] 	loss: 0.1342, 	acc: 43.60%, 	use_time: 2.61s
-[50 / 50] 	loss: 0.1260, 	acc: 43.05%, 	use_time: 2.36s
-Finish Training. Best Accuracy: 45.23%.
-Test Accuracy: 47.42%.
+[1 / 50] 	loss: 1.5671, 	acc: 32.52%, 	use_time: 60.55s
+[2 / 50] 	loss: 1.4988, 	acc: 35.33%, 	use_time: 116.66s
+[3 / 50] 	loss: 1.4380, 	acc: 37.06%, 	use_time: 114.16s
+[4 / 50] 	loss: 1.3809, 	acc: 39.78%, 	use_time: 114.18s
+[5 / 50] 	loss: 1.3244, 	acc: 40.42%, 	use_time: 112.36s
+[6 / 50] 	loss: 1.2732, 	acc: 40.60%, 	use_time: 115.68s
+[7 / 50] 	loss: 1.2230, 	acc: 40.78%, 	use_time: 111.69s
+[8 / 50] 	loss: 1.1779, 	acc: 41.42%, 	use_time: 112.88s
+[9 / 50] 	loss: 1.1360, 	acc: 42.96%, 	use_time: 115.37s
+[10 / 50] 	loss: 1.0940, 	acc: 43.14%, 	use_time: 104.37s
+[11 / 50] 	loss: 1.0566, 	acc: 43.69%, 	use_time: 33.93s
+[12 / 50] 	loss: 1.0235, 	acc: 44.05%, 	use_time: 48.14s
+[13 / 50] 	loss: 0.9774, 	acc: 43.51%, 	use_time: 50.75s
+[14 / 50] 	loss: 0.9353, 	acc: 44.60%, 	use_time: 45.14s
+[15 / 50] 	loss: 0.9038, 	acc: 44.50%, 	use_time: 46.42s
+[16 / 50] 	loss: 0.8696, 	acc: 43.96%, 	use_time: 44.63s
+[17 / 50] 	loss: 0.8323, 	acc: 44.41%, 	use_time: 51.80s
+[18 / 50] 	loss: 0.7937, 	acc: 44.60%, 	use_time: 46.96s
+[19 / 50] 	loss: 0.7549, 	acc: 45.14%, 	use_time: 46.88s
+[20 / 50] 	loss: 0.7243, 	acc: 44.60%, 	use_time: 46.18s
+[21 / 50] 	loss: 0.6907, 	acc: 44.60%, 	use_time: 48.32s
+[22 / 50] 	loss: 0.6508, 	acc: 44.23%, 	use_time: 45.85s
+[23 / 50] 	loss: 0.6241, 	acc: 44.23%, 	use_time: 45.11s
+[24 / 50] 	loss: 0.5833, 	acc: 44.60%, 	use_time: 45.74s
+[25 / 50] 	loss: 0.5546, 	acc: 43.32%, 	use_time: 48.63s
+[26 / 50] 	loss: 0.5201, 	acc: 44.23%, 	use_time: 44.86s
+[27 / 50] 	loss: 0.5006, 	acc: 44.69%, 	use_time: 45.26s
+[28 / 50] 	loss: 0.4684, 	acc: 43.60%, 	use_time: 47.30s
+[29 / 50] 	loss: 0.4426, 	acc: 43.78%, 	use_time: 44.95s
+[30 / 50] 	loss: 0.4210, 	acc: 43.78%, 	use_time: 48.21s
+[31 / 50] 	loss: 0.3932, 	acc: 43.60%, 	use_time: 45.23s
+[32 / 50] 	loss: 0.3699, 	acc: 44.23%, 	use_time: 45.64s
+[33 / 50] 	loss: 0.3509, 	acc: 44.60%, 	use_time: 44.51s
+[34 / 50] 	loss: 0.3291, 	acc: 43.51%, 	use_time: 49.40s
+[35 / 50] 	loss: 0.3110, 	acc: 43.87%, 	use_time: 45.84s
+[36 / 50] 	loss: 0.2900, 	acc: 44.41%, 	use_time: 44.90s
+[37 / 50] 	loss: 0.2718, 	acc: 43.60%, 	use_time: 46.10s
+[38 / 50] 	loss: 0.2556, 	acc: 43.23%, 	use_time: 48.00s
+[39 / 50] 	loss: 0.2458, 	acc: 43.87%, 	use_time: 45.47s
+[40 / 50] 	loss: 0.2256, 	acc: 43.23%, 	use_time: 45.82s
+[41 / 50] 	loss: 0.2107, 	acc: 42.69%, 	use_time: 45.57s
+[42 / 50] 	loss: 0.2047, 	acc: 42.96%, 	use_time: 45.14s
+[43 / 50] 	loss: 0.1903, 	acc: 43.32%, 	use_time: 45.18s
+[44 / 50] 	loss: 0.1789, 	acc: 42.69%, 	use_time: 45.44s
+[45 / 50] 	loss: 0.1695, 	acc: 43.23%, 	use_time: 45.84s
+[46 / 50] 	loss: 0.1610, 	acc: 43.78%, 	use_time: 46.30s
+[47 / 50] 	loss: 0.1523, 	acc: 43.69%, 	use_time: 65.29s
+[48 / 50] 	loss: 0.1424, 	acc: 43.78%, 	use_time: 53.00s
+[49 / 50] 	loss: 0.1330, 	acc: 42.96%, 	use_time: 55.90s
+[50 / 50] 	loss: 0.1252, 	acc: 43.23%, 	use_time: 49.38s
+Finish Training. Best Accuracy: 45.14%.
+Test Accuracy: 47.06%.

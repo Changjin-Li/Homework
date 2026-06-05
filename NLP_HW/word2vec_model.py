@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import pandas as pd
 import numpy as np
 from utils import split_sentence, process_dataset, train, test
+import pytorch_lightning as pl
 from gensim.models import Word2Vec
 
 
@@ -15,10 +16,10 @@ class Config:
         self.seed = 42
         self.lr = 1e-3
         self.weight_decay = 1e-5
-        self.epochs = 50
+        self.epochs = 10
         self.batch_size = 64
         self.num_workers = 4
-        self.dropout = 0.2
+        self.dropout = 0.5
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
@@ -98,10 +99,7 @@ def word2vec(vector_size):
 
 def main():
     config = Config()
-    torch.manual_seed(config.seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed(config.seed)
-        torch.cuda.manual_seed_all(config.seed)
+    pl.seed_everything(config.seed)
     train_data = process_dataset(config, 'dataset/train.csv')
     test_data  = process_dataset(config, 'dataset/test.csv')
     dev_data   = process_dataset(config, 'dataset/dev.csv')

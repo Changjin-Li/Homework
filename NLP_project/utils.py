@@ -1,5 +1,7 @@
 import json
 import torch
+import numpy as np
+from typing import List, Union, Tuple
 from torch.utils.data import Dataset
 from sklearn.model_selection import train_test_split
 from transformers import AutoTokenizer, EncoderDecoderModel
@@ -97,6 +99,38 @@ def translate_iterate(text: str, tokenizer, model, config):
     return translated_text
 
 
+def translate_with_prob(text: str, generate_text: str, tokenizer, model, config):
+    model.eval()
+    with torch.no_grad():
+        inputs = tokenizer(text, return_tensors="pt").to(config.device)
+        gen_ids = tokenizer(generate_text, return_tensors="pt").to(config.device).input_ids
+
+        outputs = model.generate(
+            inputs.input_ids,
+            output_scores=True,
+            return_dict_in_generate=True,
+            max_new_tokens=gen_ids.shape[1],
+        )
+
+        generated_ids = outputs.sequences[0]
+        scores = outputs.scores
+
+        log_probs = []
+        for i, token_id in enumerate(generated_ids[1:]):
+            if i >= len(scores):
+                break
+            step_logits = scores[i][0]
+            step_log_probs = torch.log_softmax(step_logits, dim=-1)
+            selected_log_prob = step_log_probs[token_id].item()
+            log_probs.append(selected_log_prob)
+
+        if len(log_probs) == 0:
+            return float('-inf')
+        avg_log_prob = sum(log_probs) / len(log_probs)
+
+    return avg_log_prob
+
+
 def bleu_score(response, output):
     """
     Calculate the BLEU score between two sentences.
@@ -119,4 +153,49 @@ def bleu_score(response, output):
         "BLEU3": round(bleu_score_3, 4),
         "BLEU4": round(bleu_score_4, 4)
     }
+
+
+def Translate(
+        texts: Union[str, dict, List[str], List[dict]],
+        models: Union[Tuple[AutoTokenizer, EncoderDecoderModel], List[Tuple[AutoTokenizer, EncoderDecoderModel]]],
+        config = None,
+    ) -> List[str]:
+    """The translating function."""
+    if not isinstance(texts, list):
+        texts = [texts]
+    if not isinstance(models, list):
+        models = [models]
+
+    translated_texts = []
+
+    for text in texts:
+        translated_text = ""
+
+        if isinstance(text, dict):
+            max_bleu = 0
+            weights = [1/4, 1/4, 1/4, 1/4]
+            for model in models:
+                response_text = translate_iterate(text["input"], model[0], model[1], config)
+                bleu = bleu_score(response_text, text["output"])
+                bleu = np.exp(weights[0] * np.log(bleu['BLEU1']) + weights[1] * np.log(bleu['BLEU2']) +
+                              weights[2] * np.log(bleu['BLEU3']) + weights[3] * np.log(bleu['BLEU4']))
+                if bleu > max_bleu:
+                    max_bleu = bleu
+                    translated_text = response_text
+
+        elif isinstance(text, str):
+            max_confidence = 0
+            for model in models:
+                response_text = translate_iterate(text, model[0], model[1], config)
+                confidence = translate_with_prob(text, response_text, model[0], model[1], config)
+                if confidence > max_confidence:
+                    max_confidence = confidence
+                    translated_text = response_text
+
+        else:
+            raise ValueError("Wrong texts.")
+
+        translated_texts.append(translated_text)
+
+    return translated_texts
 

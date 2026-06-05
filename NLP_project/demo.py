@@ -1,63 +1,64 @@
 import time
 from train import Config
-from utils import load_model, translate_iterate, bleu_score
+from utils import load_model, bleu_score, Translate
 
 
 def test():
     config = Config()
-    tokenizer, model = load_model(config.model_path, config)
+    models = [load_model(config.model_path[i], config) for i in range(len(config.model_path))]
 
     texts = [
         {
-            "input": "又，《春秋》亦有遇礼，何为不可乎！",
-            "output": "再有，《春秋》当中也有路途相遇的礼节，又有什么不可以的呢！",
+            "input": "鲁监门之女婴相从绩，中夜而泣涕，其偶曰：“何谓而泣也？",
+            "output": "鲁国监门人的女儿婴随人一起绩麻，半夜哭泣起来，她同伴问她：“为什么哭泣？”",
         },
         {
-            "input": "五年春正月，行幸犲山宫，遂如参合陂，观渔于延水，至宁川。三月，姚兴遣使朝贡。是岁，皇孙焘生。",
-            "output": "五年春正月，皇帝临幸犲山宫，随后前往参合陂，在延水边观看捕鱼，抵达宁川。三月，姚兴派使者前来朝贡。这一岁，皇孙焘出生。",
+            "input": "温恒云“京口酒可饮，兵可用”，深不欲愔居之。",
+            "output": "桓温常常说“京口的酒可以喝，士兵可以任用”，内心非常不希望郗愔留在那里。"
         },
         {
-            "input": "孔子曰： 吾观于乡，而知王道之易易也。",
-            "output": "孔子说； 我参观过乡饮酒礼以后，就知道了王者的教化得到推行是很容易的事。",
+            "input": "到兰于山南以分单于兵，毋令专乡贰师军。",
+            "output": "我希望能够独立带领一队，到兰干山南分散单于的兵力，不要让匈奴专门针对贰师将军的部队。"
         },
         {
-            "input": "桓桓武王，继世灭殷。咸任尚父，且作商臣。功冒四海，救世济民。天下宗周，万国是宾。",
-            "output": "桓桓武王，继承帝位消灭商朝。众人都称他为尚父，并且他做出了很多有益于商朝百姓的事情。他的功绩传遍四海，拯救了大众，帮助国家兴盛。全世界都尊奉周朝为宗，万国都是周朝的臣民。",
+            "input": "却军还众，不犯魏境者，贤干木之操，高魏文之礼也。",
+            "output": "秦国退兵还师，不进犯魏国边境的原因，是看重段干木的操守，推崇魏文侯的重礼。"
         },
         {
-            "input": "【太平令】俺小姐这一个有千般娇态，新状元有万种襟怀。荷皇恩荣升宠赍，成配偶不胜感戴。端的个美哉，壮哉，这都是圣裁。（院公上云）喏！报的夫人、状元知道，有天朝使命到了。（白敏中云）快排香案，接待天使。（正旦唱）愿万万载民安国泰。",
-            "output": "【太平领】我家小姐娇媚动人，新状元心胸广阔。因拥恩宠而晋升，与伴侣相配让人感激不尽。她的美丽啊，威武啊，都是神明慈爱所决定的。（府上官员上仙）啊！告诉夫人和状元，天朝的使命到了。（白敏中说）快快整理香案，迎接天使。（正旦唱）希望百万年间人民安居乐业，国家繁荣富强。",
+            "input": "吾求公数岁，公辟逃我，今公何自从吾儿游乎？",
+            "output": "我找你们好几年，你们躲着不见我，现在你们为什么来跟我儿子交往呢？"
         },
         {
-            "input": "王文正公。每荐寇莱公准。而寇数短公。一日真宗谓公曰。卿虽称准。准不称卿也。公曰。臣在位久。阙失多。准对阶下无隐。益见其忠直。此臣所以重准耳。上由是益贤公。先是公在中书。寇在密院。中书偶倒用印。密院勾吏行遣。他日密院亦倒用印。中书吏亦呈行遣。公问汝等且道密院当初行遣。是否。曰。不是。公曰。既不是。不要学他不是。",
-            "output": "王文正公。每次推荐寇莱公准。而寇莱公常常小看王文正公。有一天真宗对王文正公说道：你虽然称赞准，但准并不称赞你。王文正公回答道：臣在官位上已经很久了，也犯了很多错误。准对我从来没有隐藏过。越来越看到他的忠诚和直率。这是我为什么看重准的原因。由此，皇帝对王文正公更加认为他贤明。最初，王文正公在中书管事，寇莱公在密院任职。有一次中书的印章被倒用到密院，密院的印章被授与中书的吏员。后来，密院又倒用了中书的印章，中书的吏员也呈上了密院的印信。王文正公问你们一起来说说密院最初是怎样使用印章的。是否是这样的情况。他们回答道：不是。王文正公说道：既然不是这样的情况，就不要学他们做不正确的事情。"
+            "input": "为将而降，降而为之效死以战，虽欲浣涤其污，而已缁之素，不可复白。",
+            "output": "身为将领却投降敌军，投降后又为敌方拼死作战，即使想洗刷污名，也如同染黑的白布无法复原。"
         },
         {
-            "input": "谓齐王曰： 齐南破楚，西屈秦，用韩、魏之兵，燕、赵之众，犹鞭策也。",
-            "output": "苏秦对齐王说： 齐国向南攻破楚国，向西制服秦国，驱使韩、魏两国军队，燕、赵两国兵众，如同用鞭子赶马一样。"
+            "input": "吾群臣无有不骄侮之意者，唯赫子不失君臣之礼，是以先之。",
+            "output": "我的大臣们都对我有高傲轻慢的意思，只有高赫没有失掉君臣之间的礼节，所以先奖赏他。"
         },
     ]
 
-    print('-' * 50)
+    print('-' * 100)
     for text in texts:
         now_time = time.time()
-        translated_text = translate_iterate(text["input"], tokenizer, model, config)
+        translated_text = Translate(text, models, config)[0]
         print("原文：", text["input"])
         print("译文：", text["output"])
         print("模型翻译：", translated_text)
         print(bleu_score(translated_text, text["output"]), f"\ttime: {time.time() - now_time :.2f}s",)
-        print("-" * 50)
+        print("-" * 100)
 
 
 
 def demo(text):
     config = Config()
-    tokenizer, model = load_model(config.model_path, config)
+    models = [load_model(config.model_path[i], config) for i in range(len(config.model_path))]
+    translated_text = Translate(text, models, config)
     print(f"原文：{text}")
-    print(f"译文：{translate_iterate(text, tokenizer, model, config)}")
+    print(f"译文：{translated_text}")
 
 
 
 if __name__ == '__main__':
-    # test()
-    demo("郑屠挣不起来，那把尖刀也丢在一边，口里只叫：“打得好！”鲁达骂道：“直娘贼！还敢应口。”提起拳头来就眼眶际眉梢只一拳，打得眼睖缝裂，乌珠迸出，也似开了个彩帛铺的：红的、黑的、绛的，都滚将出来。")
+    test()
+    # demo("为将而降，降而为之效死以战，虽欲浣涤其污，而已缁之素，不可复白。")
