@@ -1,6 +1,6 @@
 import time
 from train import Config
-from utils import load_model, bleu_score, Translate
+from utils import load_model, module_name, bleu_score, Translate
 
 
 def test():
@@ -65,7 +65,8 @@ def demo(text):
     print(f"译文：{translated_text}")
 
 
+
 if __name__ == '__main__':
-    # test()
-    demo("五年春正月，行幸犲山宫，遂如参合陂，观渔于延水，至宁川。三月，姚兴遣使朝贡。是岁，皇孙焘生。")
+    test()
+    # demo("五年春正月，行幸犲山宫，遂如参合陂，观渔于延水，至宁川。三月，姚兴遣使朝贡。是岁，皇孙焘生。")
 

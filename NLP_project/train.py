@@ -173,6 +173,6 @@ def evaluate(mode = "self"):
 
 
 if __name__ == "__main__":
-    # train()
-    evaluate("others")
+    train()
+    # evaluate("self")
 

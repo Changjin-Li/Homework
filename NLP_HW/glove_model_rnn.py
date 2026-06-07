@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
+from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence
 import torch.nn.functional as F
 import csv
 import pandas as pd
 import numpy as np
-import pytorch_lightning as pl
 from utils import random_word_vector, split_vector, process_dataset, train, test
 
 
@@ -14,19 +14,19 @@ class Config:
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 5e-4
-        self.weight_decay = 1e-5
-        self.epochs = 20
+        self.lr = 1e-4
+        self.weight_decay = 1e-6
+        self.epochs = 50
         self.batch_size = 64
         self.num_workers = 4
-        self.dropout = 0.2
+        self.dropout = 0.5
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
         self.save_path = "model/glove_model_rnn.pth"
         # the param of RNN
-        self.num_layers = 5
-        self.hidden_size = 64
+        self.num_layers = 2
+        self.hidden_size = 128
         self.direction = 2
         # the param of sentence embedding
         self.sentence_length = 50
@@ -40,7 +40,7 @@ class Model(nn.Module):
         self.config = Config()
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
         self.word2vec_init()
-        self.gru = nn.GRU(
+        self.rnn = nn.LSTM(
             input_size = self.config.embedding_dim,
             hidden_size = self.config.hidden_size,
             num_layers = self.config.num_layers,
@@ -98,18 +98,30 @@ class Model(nn.Module):
         init_weight = [np.array(split_vector(v), dtype=np.float32) for v in init_weight]
         init_weight = np.array(init_weight)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
-        self.embedding.weight.requires_grad = True
+        self.embedding.weight.requires_grad = False
 
     def forward(self, x):
-        x = self.embedding(x)                       # BxLxD
-        x, _ = self.gru(x)                          # BxLxH
-        x = x.unsqueeze(1)                          # Bx1xLxH
+        lengths = (x != 0).sum(dim=1).view(-1).cpu().tolist()       # B x L
+        x = self.embedding(x)                                       # B x L x D
+        packed = pack_padded_sequence(
+            x,
+            lengths,
+            batch_first=True,
+            enforce_sorted=False,
+        )
+        packed_out, _ = self.rnn(packed)                            # B x L x H
+        x, _ = pad_packed_sequence(
+            packed_out,
+            batch_first=True,
+            total_length=self.config.sentence_length,
+        )
+        x = x.unsqueeze(1)                                          # B x 1 x L x H
         out = []
         for conv in self.conv:
-            h = self.relu(conv(x)).squeeze(-1)      # Bx1xLxH -> BxCxLx1 -> BxCxL -> BxCx1 -> BxC
-            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)
+            h = self.relu(conv(x)).squeeze(-1)                      # B x C x L
+            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)             # B x C
             out.append(h)
-        out = torch.cat(out, 1)
+        out = torch.cat(out, 1)                                # B x C'
         out = self.dropout(out)
         out = self.fc(out)
         return out
@@ -117,7 +129,6 @@ class Model(nn.Module):
 
 def main():
     config = Config()
-    pl.seed_everything(config.seed)
     torch.manual_seed(config.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed(config.seed)

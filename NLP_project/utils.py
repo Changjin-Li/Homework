@@ -45,6 +45,11 @@ def load_model(model_path, config):
     return tokenizer, model
 
 
+def module_name(model):
+    for name, module in model.named_modules():
+        print(name, type(module))
+
+
 def load_data(data_path, config):
     with open(data_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
