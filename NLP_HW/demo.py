@@ -1,14 +1,14 @@
 import torch
-from glove_model import Model, Config
+from glove_model_cnn import Model, Config
 from utils import process_dataset, test
 
 
 def demo():
-    config = Config()
+    config = Config("test")
 
     test_data = process_dataset(config, 'dataset/test.csv')
 
-    model = Model().to(config.device)
+    model = Model(config).to(config.device)
     model.load_state_dict(torch.load(config.save_path, weights_only=True))
     print(f"Model loaded from {config.save_path}")
 

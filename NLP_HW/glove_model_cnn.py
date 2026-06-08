@@ -8,7 +8,7 @@ from utils import random_word_vector, split_vector, process_dataset, train, test
 
 
 class Config:
-    def __init__(self):
+    def __init__(self, mode = "train"):
         self.tokens2id = pd.read_csv('dataset/tokens2id.csv').set_index('tokens')
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -22,7 +22,8 @@ class Config:
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
-        self.save_path = "model/glove_model.pth"
+        self.save_path = "model/glove_model_cnn.pth"
+        self.mode = mode
         # the param of sentence embedding
         self.sentence_length = 50
         self.embedding_dim = 300
@@ -30,9 +31,9 @@ class Config:
 
 
 class Model(nn.Module):
-    def __init__(self):
+    def __init__(self, config):
         super().__init__()
-        self.config = Config()
+        self.config = config
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
         self.word2vec_init()
         self.conv = nn.ModuleList([
@@ -80,7 +81,8 @@ class Model(nn.Module):
         print(f"Glove load successfully, total {len(words_vector)}.")
 
     def word2vec_init(self):
-        self.load_glove()
+        if self.config.mode == "train":
+            self.load_glove()
         init_weight = pd.read_csv('model/glove.300d/word_vector.csv')['vector'].tolist()
         init_weight = [np.array(split_vector(v), dtype=np.float32) for v in init_weight]
         init_weight = np.array(init_weight)
@@ -110,7 +112,7 @@ def main():
     train_data = process_dataset(config, 'dataset/train.csv')
     test_data  = process_dataset(config, 'dataset/test.csv')
     dev_data   = process_dataset(config, 'dataset/dev.csv')
-    model = Model().to(config.device)
+    model = Model(config).to(config.device)
     train(config, model, train_data, dev_data)
     model.load_state_dict(torch.load(config.save_path, weights_only=True))
     test_acc = test(config, model, test_data)
