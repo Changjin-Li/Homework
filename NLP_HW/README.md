@@ -10,8 +10,8 @@
 | Word_Vec | Model |   Accuracy    |
 |:--------:|:-----:|:-------------:|
 | Trained  |  CNN  | 40.54 ± 1.09% |
-|  Glove   |  CNN  | 46.29 ± 0.95% |
-|  Glove   |  RNN  |    ± %   |
+|  Glove   |  CNN  | 46.11 ± 0.95% |
 |   Bert   |   -   | 47.29 ± 0.52% |
+| Word2Vec |  CNN  |   48.19 ± %   |
 
 

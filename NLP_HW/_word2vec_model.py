@@ -1,11 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import csv
 import pandas as pd
 import numpy as np
 from gensim.models import KeyedVectors
-from utils import random_word_vector, split_vector, process_dataset, train, test
+from utils import random_word_vector, process_dataset, train, test
 
 
 class Config:
@@ -57,17 +56,6 @@ class Model(nn.Module):
         for token in tokens:
             word_vector = words_vector[token] if token in words_vector else random_word_vector(self.config.embedding_dim, 0, 0.1)
             init_weight.append(word_vector)
-        """
-        csv_file = open('model/googlenews.300d/word_vector.csv', "w", newline='')
-        name = ['vector']
-        try:
-            writer = csv.writer(csv_file)
-            writer.writerow(name)
-            for i in range(len(init_weight)):
-                writer.writerows([[init_weight[i]]])
-        finally:
-            csv_file.close()
-        """
         print(f"Word2Vec load successfully, total {len(words_vector)}.")
         return init_weight
 
