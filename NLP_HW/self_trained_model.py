@@ -1,11 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import csv
 import pandas as pd
 import numpy as np
-from gensim.models import KeyedVectors
-from utils import random_word_vector, split_vector, process_dataset, train, test
+from utils import split_sentence, process_dataset, random_word_vector, train, test
+from gensim.models import Word2Vec
 
 
 class Config:
@@ -14,21 +13,25 @@ class Config:
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 1e-4
-        self.weight_decay = 1e-6
+        self.lr = 1e-3
+        self.weight_decay = 1e-5
         self.epochs = 50
         self.batch_size = 64
         self.num_workers = 4
-        self.dropout = 0.5
+        self.dropout = 0.2
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
-        self.save_path = "model/word2vec_model.pth"
+        self.save_path = "model/self_trained_model.pth"
         self.mode = mode
         # the param of sentence embedding
         self.sentence_length = 50
         self.embedding_dim = 300
         self.vocab_size = self.tokens2id.shape[0] + 1
+        # the param of word2vec
+        self.window_size = 5
+        self.negative_samples = 20
+        self.min_count = 3
 
 
 class Model(nn.Module):
@@ -48,47 +51,51 @@ class Model(nn.Module):
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(self.config.dropout)
 
-    def load_word2vec(self):
-        print("Word2Vec loading...")
-        words_vector = KeyedVectors.load_word2vec_format('model/googlenews.300d/GoogleNews-vectors-negative300.bin', binary=True)
-        tokens = self.config.tokens2id.index.tolist()
+    def word2vec_init(self):
+        word2vec(self.config.embedding_dim)
         zero_init_weight = random_word_vector(self.config.embedding_dim, 0, 0)
         init_weight = [zero_init_weight]
+        words_vector = Word2Vec.load('model/self_word2vec/word2vec.model').wv
+        tokens = self.config.tokens2id.index.tolist()
         for token in tokens:
             word_vector = words_vector[token] if token in words_vector else random_word_vector(self.config.embedding_dim, 0, 0.1)
             init_weight.append(word_vector)
-        """
-        csv_file = open('model/googlenews.300d/word_vector.csv', "w", newline='')
-        name = ['vector']
-        try:
-            writer = csv.writer(csv_file)
-            writer.writerow(name)
-            for i in range(len(init_weight)):
-                writer.writerows([[init_weight[i]]])
-        finally:
-            csv_file.close()
-        """
-        print(f"Word2Vec load successfully, total {len(words_vector)}.")
-        return init_weight
-
-    def word2vec_init(self):
-        init_weight = self.load_word2vec()
-        init_weight = np.array(init_weight)
+        init_weight = np.array(init_weight, dtype=np.float32)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
         self.embedding.weight.requires_grad = True
 
     def forward(self, x):
-        x = self.embedding(x)                               # B x L x D
-        x = x.unsqueeze(1)                                  # B x 1 x L x D
+        vec = self.embedding(x)                     # BxLxD
+        vec = vec.unsqueeze(1)                      # Bx1xLxD
         out = []
         for conv in self.conv:
-            h = self.relu(conv(x)).squeeze(-1)              # B x C x L
-            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)     # B x C
+            h = self.relu(conv(vec)).squeeze(-1)    # Bx1xLxD -> BxCxLx1 -> BxCxL -> BxCx1 -> BxC
+            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)
             out.append(h)
-        out = torch.cat(out, 1)                        # B x C'
+        out = torch.cat(out, 1)
         out = self.dropout(out)
         out = self.fc(out)
         return out
+
+
+def word2vec(vector_size):
+    config = Config()
+    sentences = pd.concat([
+        pd.read_csv('dataset/train.csv'),
+        pd.read_csv('dataset/dev.csv'),
+        pd.read_csv('dataset/test.csv'),
+    ])['sentences'].tolist()
+    sentences = [split_sentence(sentence, mode='token') for sentence in sentences]
+    model = Word2Vec(
+        sentences = sentences,
+        vector_size = vector_size,
+        window = config.window_size,
+        negative = config.negative_samples,
+        min_count = config.min_count,
+        seed = config.seed,
+    )
+    model.save('model/self_word2vec/word2vec.model')
+    return model
 
 
 def main():

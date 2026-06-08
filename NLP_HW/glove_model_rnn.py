@@ -14,7 +14,7 @@ class Config:
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 1e-4
+        self.lr = 5e-5
         self.weight_decay = 1e-6
         self.epochs = 50
         self.batch_size = 64
@@ -40,7 +40,8 @@ class Model(nn.Module):
         super().__init__()
         self.config = config
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
-        self.word2vec_init()
+        if config.mode == "train":
+            self.word2vec_init()
         self.rnn = nn.LSTM(
             input_size = self.config.embedding_dim,
             hidden_size = self.config.hidden_size,
@@ -94,8 +95,7 @@ class Model(nn.Module):
         print(f"Glove load successfully, total {len(words_vector)}.")
 
     def word2vec_init(self):
-        if self.config.mode == 'train':
-            self.load_glove()
+        self.load_glove()
         init_weight = pd.read_csv('model/glove.300d/word_vector.csv')['vector'].tolist()
         init_weight = [np.array(split_vector(v), dtype=np.float32) for v in init_weight]
         init_weight = np.array(init_weight)
@@ -130,7 +130,7 @@ class Model(nn.Module):
 
 
 def main():
-    config = Config("test")
+    config = Config()
     torch.manual_seed(config.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed(config.seed)

@@ -2,11 +2,11 @@ import torch
 from utils import process_dataset, test
 
 
-model_name_list = ['word2vec_model', 'glove_model_cnn', 'glove_model_rnn', 'bert_model']
-model_name = model_name_list[2]
+model_name_list = ['self_trained_model', 'glove_model_cnn', 'glove_model_rnn', 'bert_model']
+model_name = model_name_list[1]
 
-if model_name == 'word2vec_model':
-    from word2vec_model import Model, Config
+if model_name == 'self_trained_model':
+    from self_trained_model import Model, Config
 elif model_name == 'glove_model_cnn':
     from glove_model_cnn import Model, Config
 elif model_name == 'glove_model_rnn':
