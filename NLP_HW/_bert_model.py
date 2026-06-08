@@ -18,8 +18,8 @@ class Config:
         self.num_workers = 4
         self.num_classes = 5
         self.max_length = 64
-        self.model_path = 'model/bert-base-uncased'
-        self.save_path = "model/bert_model"
+        self.model_path = 'model/Bert/bert-base-uncased'
+        self.save_path = "model/Bert/bert_model"
 
 
 class Model:

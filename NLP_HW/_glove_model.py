@@ -22,7 +22,7 @@ class Config:
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
-        self.save_path = "model/glove_model_cnn.pth"
+        self.save_path = "model/glove_model.pth"
         self.mode = mode
         # the param of sentence embedding
         self.sentence_length = 50

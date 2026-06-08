@@ -3,7 +3,7 @@ from utils import process_dataset, test
 
 
 model_name_list = ['self_trained_model', 'glove_model', 'bert_model', 'word2vec_model']
-model_name = model_name_list[0]
+model_name = model_name_list[3]
 
 if model_name == 'self_trained_model':
     from _self_trained_model import Model, Config
