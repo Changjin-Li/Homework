@@ -1,7 +1,6 @@
 import torch
 import time
 import pandas as pd
-import torch.optim as optim
 import pytorch_lightning as pl
 from torch.utils.data import Dataset, DataLoader
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -13,14 +12,25 @@ class Config:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
         self.lr = [1e-3, 5e-6]
-        self.weight_decay = [0.0001, 0.01]
+        self.weight_decay = [1e-4, 1e-2]
         self.epochs = [30, 20]
         self.batch_size = 64
         self.num_workers = 4
         self.num_classes = 5
         self.max_length = 64
         self.model_path = 'model/bert-base-uncased'
-        self.save_model_path = "model/bert_model"
+        self.save_path = "model/bert_model"
+
+
+class Model:
+    def __init__(self, config):
+        self.config = config
+        self.tokenizer = AutoTokenizer.from_pretrained(config.save_path)
+        self.model = AutoModelForSequenceClassification.from_pretrained(config.save_path, num_labels=config.num_classes).to(config.device)
+
+    def test(self, test_data="test"):
+        test_acc = test(test_data, self.tokenizer, self.model)
+        return test_acc
 
 
 class TextDataset(Dataset):
@@ -70,8 +80,7 @@ def train():
 
     train_data = TextDataset(pd.read_csv("dataset/train.csv"), tokenizer, config)
     train_loader = DataLoader(train_data, batch_size=config.batch_size, shuffle=True, num_workers=config.num_workers)
-
-    optimizer = optim.AdamW(model.parameters(), lr=config.lr[0], weight_decay=config.weight_decay[0])
+    optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr[0], weight_decay=config.weight_decay[0])
 
     print("Start Training Classifier...")
     model.train()
@@ -93,21 +102,18 @@ def train():
             total_loss += loss.item()
 
         test_acc = test("dev", tokenizer, model)
-
         if test_acc > max_acc:
             max_acc = test_acc
-            model.save_pretrained(config.save_model_path)
-            tokenizer.save_pretrained(config.save_model_path)
+            tokenizer.save_pretrained(config.save_path)
+            model.save_pretrained(config.save_path)
 
         print(f"Epoch [{epoch}/{config.epochs[0]}] \tLoss: {total_loss / len(train_loader):.4f} \tAcc: {test_acc * 100:.2f}% \tTime: {time.time() - start_time:.2f}s")
-
     print("Training Finished!")
 
     # train Model
-    tokenizer = AutoTokenizer.from_pretrained(config.save_model_path)
-    model = AutoModelForSequenceClassification.from_pretrained(config.save_model_path, num_labels=config.num_classes).to(config.device)
-
-    optimizer = optim.AdamW(model.parameters(), lr=config.lr[1], weight_decay=config.weight_decay[1])
+    tokenizer = AutoTokenizer.from_pretrained(config.save_path)
+    model = AutoModelForSequenceClassification.from_pretrained(config.save_path, num_labels=config.num_classes).to(config.device)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr[1], weight_decay=config.weight_decay[1])
 
     model.train()
     max_acc = 0
@@ -128,19 +134,17 @@ def train():
             total_loss += loss.item()
 
         test_acc = test("dev", tokenizer, model)
-
         if test_acc > max_acc:
             max_acc = test_acc
-            model.save_pretrained(config.save_model_path)
-            tokenizer.save_pretrained(config.save_model_path)
+            tokenizer.save_pretrained(config.save_path)
+            model.save_pretrained(config.save_path)
 
         print(f"Epoch [{epoch}/{config.epochs[1]}] \tLoss: {total_loss / len(train_loader):.4f} \tAcc: {test_acc * 100:.2f}% \tTime: {time.time() - start_time:.2f}s")
-
     print("Training Finished!")
 
     # test
-    tokenizer = AutoTokenizer.from_pretrained(config.save_model_path)
-    model = AutoModelForSequenceClassification.from_pretrained(config.save_model_path, num_labels=config.num_classes).to(config.device)
+    tokenizer = AutoTokenizer.from_pretrained(config.save_path)
+    model = AutoModelForSequenceClassification.from_pretrained(config.save_path, num_labels=config.num_classes).to(config.device)
 
     test_acc = test("test", tokenizer, model)
     print(f"Test Accuracy: {test_acc * 100:.2f}%.")

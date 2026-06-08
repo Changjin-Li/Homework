@@ -8,7 +8,7 @@ from gensim.models import Word2Vec
 
 
 class Config:
-    def __init__(self):
+    def __init__(self, mode = "train"):
         self.tokens2id = pd.read_csv('dataset/tokens2id.csv').set_index('tokens')
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -23,6 +23,7 @@ class Config:
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
         self.save_path = "model/word2vec_model.pth"
+        self.mode = mode
         # the param of sentence embedding
         self.sentence_length = 50
         self.embedding_dim = 300
@@ -34,9 +35,9 @@ class Config:
 
 
 class Model(nn.Module):
-    def __init__(self):
+    def __init__(self, config):
         super().__init__()
-        self.config = Config()
+        self.config = config
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
         self.word2vec_init()
         self.conv = nn.ModuleList([
@@ -50,7 +51,8 @@ class Model(nn.Module):
         self.dropout = nn.Dropout(self.config.dropout)
 
     def word2vec_init(self):
-        word2vec(self.config.embedding_dim)
+        if self.config.mode == "train":
+            word2vec(self.config.embedding_dim)
         zero_init_weight = random_word_vector(self.config.embedding_dim, 0, 0)
         init_weight = [zero_init_weight]
         words_vector = Word2Vec.load('model/self_word2vec/word2vec.model').wv
@@ -105,7 +107,7 @@ def main():
     train_data = process_dataset(config, 'dataset/train.csv')
     test_data  = process_dataset(config, 'dataset/test.csv')
     dev_data   = process_dataset(config, 'dataset/dev.csv')
-    model = Model().to(config.device)
+    model = Model(config).to(config.device)
     train(config, model, train_data, dev_data)
     model.load_state_dict(torch.load(config.save_path, weights_only=True))
     test_acc = test(config, model, test_data)
