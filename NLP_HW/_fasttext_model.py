@@ -64,7 +64,7 @@ class Model(nn.Module):
 
     def word2vec_init(self):
         init_weight = self.load_fasttext()
-        init_weight = np.array(init_weight, dtype=np.float32)
+        init_weight = np.array(init_weight)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
         self.embedding.weight.requires_grad = True
 
