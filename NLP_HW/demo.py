@@ -2,8 +2,8 @@ import torch
 from utils import process_dataset, test
 
 
-model_name_list = ['self_trained_model', 'glove_model', 'bert_model', 'word2vec_model', 'fasttext_model']
-model_name = model_name_list[4]
+model_name_list = ['self_trained_model', 'glove_model', 'word2vec_model', 'fasttext_model', 'bert_model']
+model_name = model_name_list[2]
 
 if model_name == 'self_trained_model':
     from _self_trained_model import Model, Config
