@@ -10,6 +10,7 @@
 
 |   Word_Vec   | Model |   Accuracy    |
 |:------------:|:-----:|:-------------:|
+|    Random    |  CNN  | 42.53 ± 0.77% |
 | Self-Trained |  CNN  | 40.54 ± 1.09% |
 |    Glove     |  CNN  | 46.11 ± 0.95% |
 |     Bert     |   -   |      ± %      |

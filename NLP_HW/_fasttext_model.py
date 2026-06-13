@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import pandas as pd
 import numpy as np
 import fasttext
-from utils import random_word_vector, split_vector, process_dataset, train, test
+from utils import random_word_vector, process_dataset, train, test
 
 
 class Config:
@@ -55,7 +55,7 @@ class Model(nn.Module):
         model = fasttext.load_model("model/fasttext.300d/cc.en.300.bin")
         for token in tokens:
             try:
-                word_vector = model.get_word_vector[token]
+                word_vector = model.get_word_vector(token)
             except:
                 word_vector = random_word_vector(self.config.embedding_dim, 0, 0.1)
             init_weight.append(word_vector)

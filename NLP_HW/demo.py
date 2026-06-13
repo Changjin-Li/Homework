@@ -2,10 +2,13 @@ import torch
 from utils import process_dataset, test
 
 
-model_name_list = ['self_trained_model', 'glove_model', 'word2vec_model', 'fasttext_model', 'bert_model']
-model_name = model_name_list[2]
+model_name_list = ['random_model', 'self_trained_model', 'glove_model', 'word2vec_model', 'fasttext_model', 'bert_model']
+model_name = model_name_list[1]
 
-if model_name == 'self_trained_model':
+
+if model_name == 'random_model':
+    from _random_model import Model, Config
+elif model_name == 'self_trained_model':
     from _self_trained_model import Model, Config
 elif model_name == 'glove_model':
     from _glove_model import Model, Config

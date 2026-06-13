@@ -3,8 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pandas as pd
 import numpy as np
-from utils import split_sentence, process_dataset, random_word_vector, train, test
-from gensim.models import Word2Vec
+from utils import process_dataset, random_word_vector, train, test
 
 
 class Config:
@@ -22,16 +21,12 @@ class Config:
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
-        self.save_path = "model/self_trained_model.pth"
+        self.save_path = "model/random_model.pth"
         self.mode = mode
         # the param of sentence embedding
         self.sentence_length = 50
         self.embedding_dim = 300
         self.vocab_size = self.tokens2id.shape[0] + 1
-        # the param of word2vec
-        self.window_size = 5
-        self.negative_samples = 20
-        self.min_count = 3
 
 
 class Model(nn.Module):
@@ -40,7 +35,7 @@ class Model(nn.Module):
         self.config = config
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
         if config.mode == "train":
-            self.word2vec_init()
+            self.random_init()
         self.conv = nn.ModuleList([
             nn.Conv2d(1, self.config.num_filters, (k, self.config.embedding_dim))
             for k in self.config.filter_size
@@ -51,14 +46,12 @@ class Model(nn.Module):
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(self.config.dropout)
 
-    def word2vec_init(self):
-        word2vec(self.config.embedding_dim)
+    def random_init(self):
         zero_init_weight = random_word_vector(self.config.embedding_dim, 0, 0)
         init_weight = [zero_init_weight]
-        words_vector = Word2Vec.load('model/self_word2vec/word2vec.model').wv
         tokens = self.config.tokens2id.index.tolist()
-        for token in tokens:
-            word_vector = words_vector[token] if token in words_vector else np.array(random_word_vector(self.config.embedding_dim, 0, 0.1))
+        for _ in tokens:
+            word_vector = np.array(random_word_vector(self.config.embedding_dim, 0, 0.1))
             init_weight.append(word_vector)
         init_weight = np.array(init_weight)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
@@ -76,25 +69,6 @@ class Model(nn.Module):
         out = self.dropout(out)
         out = self.fc(out)
         return out
-
-
-def word2vec(vector_size):
-    config = Config()
-    sentences = pd.concat([
-        pd.read_csv('dataset/train.csv'),
-        pd.read_csv('dataset/dev.csv'),
-    ])['sentences'].tolist()
-    sentences = [split_sentence(sentence, mode='token') for sentence in sentences]
-    model = Word2Vec(
-        sentences = sentences,
-        vector_size = vector_size,
-        window = config.window_size,
-        negative = config.negative_samples,
-        min_count = config.min_count,
-        seed = config.seed,
-    )
-    model.save('model/self_word2vec/word2vec.model')
-    return model
 
 
 def main():
