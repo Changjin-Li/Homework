@@ -13,8 +13,8 @@ class Config:
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 1e-4
-        self.weight_decay = 1e-6
+        self.lr = 1e-3
+        self.weight_decay = 1e-5
         self.epochs = 50
         self.batch_size = 64
         self.num_workers = 4
@@ -57,7 +57,7 @@ class Model(nn.Module):
             try:
                 word_vector = model.get_word_vector(token)
             except:
-                word_vector = random_word_vector(self.config.embedding_dim, 0, 0.1)
+                word_vector = np.array(random_word_vector(self.config.embedding_dim, 0, 0.1))
             init_weight.append(word_vector)
         print(f"FastText load successfully, total {len(model.get_words())}.")
         return init_weight

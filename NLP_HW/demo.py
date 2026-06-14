@@ -3,7 +3,7 @@ from utils import process_dataset, test
 
 
 model_name_list = ['random_model', 'self_trained_model', 'glove_model', 'word2vec_model', 'fasttext_model', 'bert_model']
-model_name = model_name_list[1]
+model_name = model_name_list[5]
 
 
 if model_name == 'random_model':

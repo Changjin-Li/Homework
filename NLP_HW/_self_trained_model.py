@@ -14,7 +14,7 @@ class Config:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
         self.lr = 5e-4
-        self.weight_decay = 0.01
+        self.weight_decay = 1e-3
         self.epochs = 50
         self.batch_size = 64
         self.num_workers = 4
@@ -31,7 +31,7 @@ class Config:
         # the param of word2vec
         self.window_size = 5
         self.negative_samples = 20
-        self.min_count = 3
+        self.min_count = 100
 
 
 class Model(nn.Module):
@@ -58,7 +58,12 @@ class Model(nn.Module):
         words_vector = Word2Vec.load('model/self_word2vec/word2vec.model').wv
         tokens = self.config.tokens2id.index.tolist()
         for token in tokens:
-            word_vector = words_vector[token] if token in words_vector else np.array(random_word_vector(self.config.embedding_dim, 0, 0.1))
+            if token in words_vector:
+                word_vector = words_vector[token]
+                word_vector = np.array(word_vector)
+                word_vector = word_vector / np.linalg.norm(word_vector)
+            else:
+                word_vector = np.array(random_word_vector(self.config.embedding_dim, 0, 0.1))
             init_weight.append(word_vector)
         init_weight = np.array(init_weight)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
