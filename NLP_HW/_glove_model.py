@@ -36,7 +36,7 @@ class Model(nn.Module):
         self.config = config
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
         if config.mode == "train":
-            self.word2vec_init()
+            self.glove_init()
         self.conv = nn.ModuleList([
             nn.Conv2d(1, self.config.num_filters, (k, self.config.embedding_dim))
             for k in self.config.filter_size
@@ -81,7 +81,7 @@ class Model(nn.Module):
             csv_file.close()
         print(f"Glove load successfully, total {len(words_vector)}.")
 
-    def word2vec_init(self):
+    def glove_init(self):
         self.load_glove()
         init_weight = pd.read_csv('model/glove.300d/word_vector.csv')['vector'].tolist()
         init_weight = [np.array(split_vector(v), dtype=np.float32) for v in init_weight]

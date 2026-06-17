@@ -17,4 +17,12 @@
 |     Bert     |   -   |      ± %      |
 |   Word2Vec   |  CNN  | 48.19 ± 0.59% |
 
+### Pretrained Model
 
+If you can't successfully download pretrained model, you can use the code:
+
+```bash
+pip install huggingface-hub
+export HF_ENDPOINT=https://hf-mirror.com
+hf download airkingbd/dplm_650m --local-dir ./dplm_650m
+```

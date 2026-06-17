@@ -36,7 +36,7 @@ class Model(nn.Module):
         self.config = config
         self.embedding = nn.Embedding(self.config.vocab_size, self.config.embedding_dim)
         if config.mode == "train":
-            self.word2vec_init()
+            self.fasttext_init()
         self.conv = nn.ModuleList([
             nn.Conv2d(1, self.config.num_filters, (k, self.config.embedding_dim))
             for k in self.config.filter_size
@@ -62,7 +62,7 @@ class Model(nn.Module):
         print(f"FastText load successfully, total {len(model.get_words())}.")
         return init_weight
 
-    def word2vec_init(self):
+    def fasttext_init(self):
         init_weight = self.load_fasttext()
         init_weight = np.array(init_weight)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
