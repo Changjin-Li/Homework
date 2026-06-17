@@ -6,38 +6,38 @@ Successfully load data from dataset/test.csv
 Loading data...
 Successfully load data from dataset/dev.csv
 Start Training...
-[1 / 30] 	loss: 1.5709, 	acc: 30.79%, 	use_time: 18.40s
-[2 / 30] 	loss: 1.4682, 	acc: 38.87%, 	use_time: 31.22s
-[3 / 30] 	loss: 1.1371, 	acc: 39.51%, 	use_time: 33.13s
-[4 / 30] 	loss: 0.8198, 	acc: 38.51%, 	use_time: 36.28s
-[5 / 30] 	loss: 0.5285, 	acc: 36.42%, 	use_time: 32.98s
-[6 / 30] 	loss: 0.3203, 	acc: 36.42%, 	use_time: 32.44s
-[7 / 30] 	loss: 0.2065, 	acc: 37.24%, 	use_time: 31.08s
-[8 / 30] 	loss: 0.1323, 	acc: 35.69%, 	use_time: 30.79s
-[9 / 30] 	loss: 0.0914, 	acc: 35.06%, 	use_time: 31.19s
-[10 / 30] 	loss: 0.0692, 	acc: 34.79%, 	use_time: 31.84s
-[11 / 30] 	loss: 0.0537, 	acc: 36.15%, 	use_time: 30.16s
-[12 / 30] 	loss: 0.0482, 	acc: 34.42%, 	use_time: 32.19s
-[13 / 30] 	loss: 0.0310, 	acc: 34.70%, 	use_time: 30.59s
-[14 / 30] 	loss: 0.0318, 	acc: 33.79%, 	use_time: 32.68s
-[15 / 30] 	loss: 0.0239, 	acc: 33.33%, 	use_time: 30.34s
-[16 / 30] 	loss: 0.0192, 	acc: 34.51%, 	use_time: 32.29s
-[17 / 30] 	loss: 0.0216, 	acc: 34.24%, 	use_time: 30.23s
-[18 / 30] 	loss: 0.0131, 	acc: 35.88%, 	use_time: 31.33s
-[19 / 30] 	loss: 0.0134, 	acc: 33.70%, 	use_time: 31.64s
-[20 / 30] 	loss: 0.0203, 	acc: 33.51%, 	use_time: 30.68s
-[21 / 30] 	loss: 0.0125, 	acc: 33.61%, 	use_time: 30.59s
-[22 / 30] 	loss: 0.0148, 	acc: 33.88%, 	use_time: 32.48s
-[23 / 30] 	loss: 0.0132, 	acc: 33.24%, 	use_time: 30.32s
-[24 / 30] 	loss: 0.0102, 	acc: 34.51%, 	use_time: 28.84s
-[25 / 30] 	loss: 0.0101, 	acc: 33.79%, 	use_time: 31.66s
-[26 / 30] 	loss: 0.0064, 	acc: 33.88%, 	use_time: 28.96s
-[27 / 30] 	loss: 0.0063, 	acc: 33.24%, 	use_time: 31.46s
-[28 / 30] 	loss: 0.0044, 	acc: 34.33%, 	use_time: 29.03s
-[29 / 30] 	loss: 0.0068, 	acc: 33.15%, 	use_time: 29.45s
-[30 / 30] 	loss: 0.0033, 	acc: 34.15%, 	use_time: 28.55s
-Finish Training. Best Accuracy: 39.51%.
-Test Accuracy: 43.21%.
+[1 / 30] 	loss: 1.5708, 	acc: 31.06%, 	use_time: 8.93s
+[2 / 30] 	loss: 1.4664, 	acc: 38.33%, 	use_time: 18.52s
+[3 / 30] 	loss: 1.1407, 	acc: 38.78%, 	use_time: 19.09s
+[4 / 30] 	loss: 0.8056, 	acc: 38.33%, 	use_time: 17.98s
+[5 / 30] 	loss: 0.5014, 	acc: 37.42%, 	use_time: 18.41s
+[6 / 30] 	loss: 0.2943, 	acc: 35.97%, 	use_time: 18.57s
+[7 / 30] 	loss: 0.1814, 	acc: 38.42%, 	use_time: 17.77s
+[8 / 30] 	loss: 0.1169, 	acc: 36.88%, 	use_time: 17.78s
+[9 / 30] 	loss: 0.0869, 	acc: 36.15%, 	use_time: 17.85s
+[10 / 30] 	loss: 0.0600, 	acc: 36.69%, 	use_time: 18.56s
+[11 / 30] 	loss: 0.0436, 	acc: 36.51%, 	use_time: 20.07s
+[12 / 30] 	loss: 0.0418, 	acc: 35.06%, 	use_time: 19.32s
+[13 / 30] 	loss: 0.0417, 	acc: 35.60%, 	use_time: 19.39s
+[14 / 30] 	loss: 0.0364, 	acc: 34.15%, 	use_time: 18.66s
+[15 / 30] 	loss: 0.0488, 	acc: 34.42%, 	use_time: 19.35s
+[16 / 30] 	loss: 0.0258, 	acc: 34.24%, 	use_time: 19.10s
+[17 / 30] 	loss: 0.0153, 	acc: 33.97%, 	use_time: 19.61s
+[18 / 30] 	loss: 0.0103, 	acc: 33.79%, 	use_time: 35.15s
+[19 / 30] 	loss: 0.0124, 	acc: 34.97%, 	use_time: 20.65s
+[20 / 30] 	loss: 0.0074, 	acc: 33.70%, 	use_time: 18.66s
+[21 / 30] 	loss: 0.0086, 	acc: 33.79%, 	use_time: 19.47s
+[22 / 30] 	loss: 0.0183, 	acc: 32.88%, 	use_time: 18.84s
+[23 / 30] 	loss: 0.0118, 	acc: 34.60%, 	use_time: 19.96s
+[24 / 30] 	loss: 0.0139, 	acc: 35.42%, 	use_time: 18.38s
+[25 / 30] 	loss: 0.0111, 	acc: 35.33%, 	use_time: 19.07s
+[26 / 30] 	loss: 0.0078, 	acc: 34.15%, 	use_time: 20.50s
+[27 / 30] 	loss: 0.0071, 	acc: 34.79%, 	use_time: 18.40s
+[28 / 30] 	loss: 0.0046, 	acc: 33.79%, 	use_time: 19.52s
+[29 / 30] 	loss: 0.0033, 	acc: 34.24%, 	use_time: 18.61s
+[30 / 30] 	loss: 0.0032, 	acc: 33.70%, 	use_time: 20.12s
+Finish Training. Best Accuracy: 38.78%.
+Test Accuracy: 42.31%.
 -------------------------------------CNN-----------------------------------
 Loading data...
 Successfully load data from dataset/train.csv

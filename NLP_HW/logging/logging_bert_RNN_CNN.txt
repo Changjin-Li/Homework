@@ -1,0 +1,153 @@
+------------------------------------------------------------------------
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 17443.03it/s]
+[transformers] BertModel LOAD REPORT from: bert-base-uncased
+Key                                        | Status     |  |
+-------------------------------------------+------------+--+-
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  |
+cls.seq_relationship.weight                | UNEXPECTED |  |
+cls.predictions.bias                       | UNEXPECTED |  |
+cls.predictions.transform.dense.weight     | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  |
+cls.predictions.transform.dense.bias       | UNEXPECTED |  |
+cls.seq_relationship.bias                  | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Start Training Classifier...
+[1 / 20] 	loss: 1.4458, 	acc: 43.69%, 	use_time: 28.05s
+[2 / 20] 	loss: 1.1843, 	acc: 46.05%, 	use_time: 27.82s
+[3 / 20] 	loss: 1.0479, 	acc: 47.77%, 	use_time: 27.58s
+[4 / 20] 	loss: 0.9048, 	acc: 49.14%, 	use_time: 28.15s
+[5 / 20] 	loss: 0.7866, 	acc: 46.78%, 	use_time: 27.11s
+[6 / 20] 	loss: 0.6830, 	acc: 43.87%, 	use_time: 27.11s
+[7 / 20] 	loss: 0.5815, 	acc: 47.41%, 	use_time: 27.10s
+[8 / 20] 	loss: 0.4901, 	acc: 46.78%, 	use_time: 27.01s
+[9 / 20] 	loss: 0.4163, 	acc: 48.32%, 	use_time: 27.05s
+[10 / 20] 	loss: 0.3558, 	acc: 47.96%, 	use_time: 27.05s
+[11 / 20] 	loss: 0.2943, 	acc: 46.41%, 	use_time: 26.98s
+[12 / 20] 	loss: 0.2698, 	acc: 47.41%, 	use_time: 27.06s
+[13 / 20] 	loss: 0.2457, 	acc: 47.59%, 	use_time: 27.05s
+[14 / 20] 	loss: 0.2086, 	acc: 47.59%, 	use_time: 27.08s
+[15 / 20] 	loss: 0.1787, 	acc: 47.68%, 	use_time: 27.11s
+[16 / 20] 	loss: 0.1716, 	acc: 46.05%, 	use_time: 27.08s
+[17 / 20] 	loss: 0.1499, 	acc: 49.14%, 	use_time: 27.05s
+[18 / 20] 	loss: 0.1433, 	acc: 47.77%, 	use_time: 27.06s
+[19 / 20] 	loss: 0.1279, 	acc: 49.32%, 	use_time: 28.03s
+[20 / 20] 	loss: 0.1130, 	acc: 47.50%, 	use_time: 27.06s
+Finish Training. Best Accuracy: 49.32%.
+Test Accuracy: 51.81%.
+------------------------------------RNN------------------------------------
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 18050.75it/s]
+[transformers] BertModel LOAD REPORT from: bert-base-uncased
+Key                                        | Status     |  |
+-------------------------------------------+------------+--+-
+cls.seq_relationship.weight                | UNEXPECTED |  |
+cls.predictions.transform.dense.bias       | UNEXPECTED |  | 
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  |
+cls.seq_relationship.bias                  | UNEXPECTED |  |
+cls.predictions.bias                       | UNEXPECTED |  |
+cls.predictions.transform.dense.weight     | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Start Training Classifier...
+[1 / 20] 	loss: 1.4423, 	acc: 43.87%, 	use_time: 27.30s
+[2 / 20] 	loss: 1.2097, 	acc: 45.14%, 	use_time: 27.57s
+[3 / 20] 	loss: 1.0397, 	acc: 46.41%, 	use_time: 27.75s
+[4 / 20] 	loss: 0.9177, 	acc: 46.59%, 	use_time: 27.82s
+[5 / 20] 	loss: 0.7936, 	acc: 48.86%, 	use_time: 27.79s
+[6 / 20] 	loss: 0.6883, 	acc: 47.23%, 	use_time: 26.96s
+[7 / 20] 	loss: 0.5617, 	acc: 48.14%, 	use_time: 26.85s
+[8 / 20] 	loss: 0.4548, 	acc: 46.32%, 	use_time: 26.90s
+[9 / 20] 	loss: 0.3743, 	acc: 45.96%, 	use_time: 26.89s
+[10 / 20] 	loss: 0.3332, 	acc: 44.60%, 	use_time: 26.87s
+[11 / 20] 	loss: 0.2772, 	acc: 45.50%, 	use_time: 26.95s
+[12 / 20] 	loss: 0.2315, 	acc: 47.59%, 	use_time: 26.96s
+[13 / 20] 	loss: 0.1922, 	acc: 46.59%, 	use_time: 26.95s
+[14 / 20] 	loss: 0.1877, 	acc: 48.77%, 	use_time: 26.92s
+[15 / 20] 	loss: 0.1461, 	acc: 48.59%, 	use_time: 26.93s
+[16 / 20] 	loss: 0.1449, 	acc: 47.23%, 	use_time: 27.01s
+[17 / 20] 	loss: 0.1496, 	acc: 47.05%, 	use_time: 26.97s
+[18 / 20] 	loss: 0.1210, 	acc: 47.23%, 	use_time: 26.90s
+[19 / 20] 	loss: 0.1105, 	acc: 45.78%, 	use_time: 26.87s
+[20 / 20] 	loss: 0.0928, 	acc: 47.32%, 	use_time: 26.99s
+Finish Training. Best Accuracy: 48.86%.
+Test Accuracy: 52.22%.
+------------------------------------CNN------------------------------------
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 17826.76it/s]
+[transformers] BertModel LOAD REPORT from: bert-base-uncased
+Key                                        | Status     |  |
+-------------------------------------------+------------+--+-
+cls.seq_relationship.bias                  | UNEXPECTED |  |
+cls.predictions.transform.dense.bias       | UNEXPECTED |  |
+cls.predictions.bias                       | UNEXPECTED |  |
+cls.predictions.transform.dense.weight     | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  |
+cls.seq_relationship.weight                | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Start Training Classifier...
+[1 / 20] 	loss: 1.4081, 	acc: 46.05%, 	use_time: 27.57s
+[2 / 20] 	loss: 1.1250, 	acc: 47.59%, 	use_time: 27.64s
+[3 / 20] 	loss: 0.9910, 	acc: 48.32%, 	use_time: 27.68s
+[4 / 20] 	loss: 0.8563, 	acc: 49.68%, 	use_time: 27.72s
+[5 / 20] 	loss: 0.7298, 	acc: 48.86%, 	use_time: 26.90s
+[6 / 20] 	loss: 0.6264, 	acc: 47.77%, 	use_time: 26.84s
+[7 / 20] 	loss: 0.5078, 	acc: 46.78%, 	use_time: 26.87s
+[8 / 20] 	loss: 0.4068, 	acc: 47.96%, 	use_time: 26.82s
+[9 / 20] 	loss: 0.3312, 	acc: 45.59%, 	use_time: 26.88s
+[10 / 20] 	loss: 0.2711, 	acc: 49.59%, 	use_time: 26.80s
+[11 / 20] 	loss: 0.2153, 	acc: 47.96%, 	use_time: 26.88s
+[12 / 20] 	loss: 0.1988, 	acc: 48.14%, 	use_time: 26.98s
+[13 / 20] 	loss: 0.1591, 	acc: 48.59%, 	use_time: 26.95s
+[14 / 20] 	loss: 0.1402, 	acc: 47.05%, 	use_time: 26.90s
+[15 / 20] 	loss: 0.1154, 	acc: 47.50%, 	use_time: 26.97s
+[16 / 20] 	loss: 0.1024, 	acc: 48.32%, 	use_time: 26.96s
+[17 / 20] 	loss: 0.0930, 	acc: 47.59%, 	use_time: 27.00s
+[18 / 20] 	loss: 0.0850, 	acc: 47.14%, 	use_time: 26.99s
+[19 / 20] 	loss: 0.0827, 	acc: 47.77%, 	use_time: 26.98s
+[20 / 20] 	loss: 0.0660, 	acc: 47.68%, 	use_time: 26.96s
+Finish Training. Best Accuracy: 49.68%.
+Test Accuracy: 52.71%.
+------------------------------------RNN + CNN------------------------------------
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 9941.48it/s]
+[transformers] BertModel LOAD REPORT from: bert-base-uncased
+Key                                        | Status     |  |
+-------------------------------------------+------------+--+-
+cls.predictions.transform.dense.weight     | UNEXPECTED |  |
+cls.predictions.bias                       | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  |
+cls.predictions.transform.dense.bias       | UNEXPECTED |  |
+cls.seq_relationship.bias                  | UNEXPECTED |  |
+cls.seq_relationship.weight                | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Start Training Classifier...
+[1 / 20] 	loss: 1.5128, 	acc: 38.78%, 	use_time: 27.42s
+[2 / 20] 	loss: 1.3175, 	acc: 46.23%, 	use_time: 27.27s
+[3 / 20] 	loss: 1.1585, 	acc: 46.68%, 	use_time: 27.53s
+[4 / 20] 	loss: 1.0397, 	acc: 44.32%, 	use_time: 26.49s
+[5 / 20] 	loss: 0.9646, 	acc: 45.14%, 	use_time: 26.47s
+[6 / 20] 	loss: 0.8505, 	acc: 46.23%, 	use_time: 26.58s
+[7 / 20] 	loss: 0.7638, 	acc: 45.87%, 	use_time: 26.53s
+[8 / 20] 	loss: 0.6788, 	acc: 47.14%, 	use_time: 27.23s
+[9 / 20] 	loss: 0.5920, 	acc: 47.59%, 	use_time: 27.34s
+[10 / 20] 	loss: 0.5281, 	acc: 43.42%, 	use_time: 26.53s
+[11 / 20] 	loss: 0.4902, 	acc: 47.50%, 	use_time: 26.55s
+[12 / 20] 	loss: 0.4053, 	acc: 48.14%, 	use_time: 27.33s
+[13 / 20] 	loss: 0.3502, 	acc: 45.41%, 	use_time: 26.64s
+[14 / 20] 	loss: 0.3101, 	acc: 47.14%, 	use_time: 26.50s
+[15 / 20] 	loss: 0.2836, 	acc: 47.14%, 	use_time: 26.52s
+[16 / 20] 	loss: 0.2553, 	acc: 47.68%, 	use_time: 26.63s
+[17 / 20] 	loss: 0.2274, 	acc: 49.41%, 	use_time: 27.36s
+[18 / 20] 	loss: 0.2301, 	acc: 49.68%, 	use_time: 27.38s
+[19 / 20] 	loss: 0.2196, 	acc: 49.59%, 	use_time: 26.69s
+[20 / 20] 	loss: 0.1790, 	acc: 47.87%, 	use_time: 26.73s
+Finish Training. Best Accuracy: 49.68%.
+Test Accuracy: 51.04%.
+------------------------------------------------------------------------

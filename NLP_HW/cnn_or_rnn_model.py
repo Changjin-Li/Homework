@@ -30,7 +30,7 @@ class Config:
         self.num_layers = 1
         self.hidden_size = 128
         self.direction = 2
-        self.save_path = "model/word2vec_model_rnn.pth"
+        self.save_path = "model/ablation_model.pth"
         self.mode = mode
         self.word2vec = "word2vec"
         self.net = "cnn"
