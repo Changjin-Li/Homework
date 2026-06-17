@@ -3,28 +3,29 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pandas as pd
 import numpy as np
+import pytorch_lightning as pl
 from utils import process_dataset, random_word_vector, train, test
 
 
 class Config:
     def __init__(self, mode = "train"):
+        self.mode = mode
         self.tokens2id = pd.read_csv('dataset/tokens2id.csv').set_index('tokens')
         # the param of the network
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
         self.lr = 5e-4
         self.weight_decay = 0.01
-        self.epochs = 50
+        self.epochs = 30
         self.batch_size = 64
         self.num_workers = 4
         self.dropout = 0.2
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
-        self.save_path = "model/random_model.pth"
-        self.mode = mode
+        self.save_path = "model_CNN/random_model.pth"
         # the param of sentence embedding
-        self.sentence_length = 50
+        self.sentence_length = 128
         self.embedding_dim = 300
         self.vocab_size = self.tokens2id.shape[0] + 1
 
@@ -40,9 +41,7 @@ class Model(nn.Module):
             nn.Conv2d(1, self.config.num_filters, (k, self.config.embedding_dim))
             for k in self.config.filter_size
         ])
-        self.fc = nn.Sequential(
-            nn.Linear(len(self.config.filter_size) * self.config.num_filters, self.config.num_classes),
-        )
+        self.fc = nn.Linear(len(self.config.filter_size) * self.config.num_filters, self.config.num_classes)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(self.config.dropout)
 
@@ -58,14 +57,14 @@ class Model(nn.Module):
         self.embedding.weight.requires_grad = True
 
     def forward(self, x):
-        x = self.embedding(x)                             # B x L x D
-        x = x.unsqueeze(1)                                # B x 1 x L x D
+        x = self.embedding(x)
+        x = x.unsqueeze(1)
         out = []
         for conv in self.conv:
-            h = self.relu(conv(x)).squeeze(-1)            # B x C x L
-            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)   # B x C
+            h = self.relu(conv(x)).squeeze(-1)
+            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)
             out.append(h)
-        out = torch.cat(out, 1)                      # B x C'
+        out = torch.cat(out, 1)
         out = self.dropout(out)
         out = self.fc(out)
         return out
@@ -73,10 +72,7 @@ class Model(nn.Module):
 
 def main():
     config = Config()
-    torch.manual_seed(config.seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed(config.seed)
-        torch.cuda.manual_seed_all(config.seed)
+    pl.seed_everything(config.seed)
     train_data = process_dataset(config, 'dataset/train.csv')
     test_data  = process_dataset(config, 'dataset/test.csv')
     dev_data   = process_dataset(config, 'dataset/dev.csv')

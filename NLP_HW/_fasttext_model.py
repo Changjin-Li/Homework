@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import pandas as pd
 import numpy as np
+import pytorch_lightning as pl
 import fasttext
 from utils import random_word_vector, process_dataset, train, test
 
@@ -41,9 +42,7 @@ class Model(nn.Module):
             nn.Conv2d(1, self.config.num_filters, (k, self.config.embedding_dim))
             for k in self.config.filter_size
         ])
-        self.fc = nn.Sequential(
-            nn.Linear(len(self.config.filter_size) * self.config.num_filters, self.config.num_classes),
-        )
+        self.fc = nn.Linear(len(self.config.filter_size) * self.config.num_filters, self.config.num_classes)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(self.config.dropout)
 
@@ -69,14 +68,14 @@ class Model(nn.Module):
         self.embedding.weight.requires_grad = True
 
     def forward(self, x):
-        x = self.embedding(x)                               # B x L x D
-        x = x.unsqueeze(1)                                  # B x 1 x L x D
+        x = self.embedding(x)
+        x = x.unsqueeze(1)
         out = []
         for conv in self.conv:
-            h = self.relu(conv(x)).squeeze(-1)              # B x C x L
-            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)     # B x C
+            h = self.relu(conv(x)).squeeze(-1)
+            h = F.max_pool1d(h, h.size(-1)).squeeze(-1)
             out.append(h)
-        out = torch.cat(out, 1)                        # B x C'
+        out = torch.cat(out, 1)
         out = self.dropout(out)
         out = self.fc(out)
         return out
@@ -84,10 +83,7 @@ class Model(nn.Module):
 
 def main():
     config = Config()
-    torch.manual_seed(config.seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed(config.seed)
-        torch.cuda.manual_seed_all(config.seed)
+    pl.seed_everything(config.seed)
     train_data = process_dataset(config, 'dataset/train.csv')
     test_data  = process_dataset(config, 'dataset/test.csv')
     dev_data   = process_dataset(config, 'dataset/dev.csv')

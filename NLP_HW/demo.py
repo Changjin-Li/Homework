@@ -2,22 +2,20 @@ import torch
 from utils import process_dataset, test
 
 
-model_name_list = ['random_model', 'self_trained_model', 'glove_model', 'word2vec_model', 'fasttext_model', 'bert_model']
-model_name = model_name_list[5]
+model_name_list = ['random_model', 'fasttext_model', 'glove_model', 'word2vec_model', 'bert_model']
+model_name = model_name_list[0]
 
 
 if model_name == 'random_model':
     from _random_model import Model, Config
-elif model_name == 'self_trained_model':
-    from _self_trained_model import Model, Config
-elif model_name == 'glove_model':
-    from _glove_model import Model, Config
-elif model_name == 'bert_model':
-    from _bert_model import Model, Config
-elif model_name == 'word2vec_model':
-    from _word2vec_model import Model, Config
 elif model_name == 'fasttext_model':
     from _fasttext_model import Model, Config
+elif model_name == 'glove_model':
+    from _glove_model import Model, Config
+elif model_name == 'word2vec_model':
+    from _word2vec_model import Model, Config
+elif model_name == 'bert_model':
+    from _bert_model import Model, Config
 else:
     raise NotImplementedError
 
