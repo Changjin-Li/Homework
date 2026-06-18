@@ -14,23 +14,27 @@ from utils import process_dataset, split_vector, random_word_vector, train, test
 
 lr = {
     "random": {"CNN": 5e-4, "RNN": 5e-4},
-    "fasttext": {"CNN": 1e-3, "RNN": 5e-4},
+    "fasttext": {"CNN": 1e-3, "RNN": 1e-3},
     "glove": {"CNN": 1e-4, "RNN": 1e-4},
+    "word2vec": {"CNN": 1e-4, "RNN": 5e-4},
 }
 weight_decay = {
     "random": {"CNN": 1e-2, "RNN": 1e-2},
-    "fasttext": {"CNN": 1e-5, "RNN": 1e-3},
+    "fasttext": {"CNN": 1e-5, "RNN": 1e-2},
     "glove": {"CNN": 1e-6, "RNN": 1e-6},
+    "word2vec": {"CNN": 1e-6, "RNN": 1e-3},
 }
 dropout = {
     "random": {"CNN": 0.2, "RNN": 0.2},
     "fasttext": {"CNN": 0.5, "RNN": 0.5},
     "glove": {"CNN": 0.5, "RNN": 0.5},
+    "word2vec": {"CNN": 0.5, "RNN": 0.2},
 }
 sentence_length = {
     "random": 128,
     "fasttext": 128,
     "glove": 50,
+    "word2vec": 128,
 }
 model_name = ['random', 'fasttext', 'glove', 'word2vec'][3]
 
