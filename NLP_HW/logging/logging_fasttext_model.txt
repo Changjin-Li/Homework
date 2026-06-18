@@ -84,4 +84,3 @@ Start Training...
 [30 / 30] 	loss: 0.0087, 	acc: 34.15%, 	use_time: 3.38s
 Finish Training. Best Accuracy: 41.78%.
 Test Accuracy: 44.57%.
------------------------------- RNN + CNN ------------------------------
