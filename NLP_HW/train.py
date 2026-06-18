@@ -24,7 +24,7 @@ weight_decay = {
 }
 dropout = {
     "random": {"CNN": 0.2, "RNN": 0.2},
-    "fasttext": {"CNN": 0.2, "RNN": 0.2},
+    "fasttext": {"CNN": 0.5, "RNN": 0.5},
     "glove": {"CNN": 0.5, "RNN": 0.5},
 }
 sentence_length = {

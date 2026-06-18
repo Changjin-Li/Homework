@@ -9,6 +9,11 @@ import pandas as pd
 import time
 
 
+lr = {"CNN": 2e-5, "RNN": 2e-5, "RNN_CNN": 2e-5, "None": 2e-5}
+weight_decay = {"CNN": 5e-3, "RNN": 5e-3, "RNN_CNN": 5e-3, "None": 5e-3}
+dropout = {"CNN": 0.3, "RNN": 0.3, "RNN_CNN": 0.3, "None": 0.3}
+
+
 class Config:
     def __init__(self, mode = "train", word_vector = "bert", net = "CNN"):
         self.net = net
@@ -16,16 +21,16 @@ class Config:
         self.word_vector = word_vector
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
-        self.lr = 2e-5
-        self.weight_decay = 5e-3
+        self.lr = lr[net]
+        self.weight_decay = dropout[net]
         self.epochs = 20
         self.batch_size = 128
-        self.num_workers = 8
+        self.num_workers = 4
         self.num_classes = 5
         self.max_length = 128
         self.model_path = 'model/bert-base-uncased'
-        self.save_path = f"model_{net}/{word_vector}_model.pth"
-        self.dropout = 0.3
+        self.save_path = f"model_{net}/{word_vector}_model.pth" if net != "None" else f"model/{word_vector}_model.pth"
+        self.dropout = dropout[net]
         # CNN
         self.channels = 256
         self.kernel_size = 5
