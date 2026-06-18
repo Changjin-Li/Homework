@@ -30,12 +30,6 @@ dropout = {
     "glove": {"CNN": 0.5, "RNN": 0.5},
     "word2vec": {"CNN": 0.5, "RNN": 0.2},
 }
-sentence_length = {
-    "random": 128,
-    "fasttext": 128,
-    "glove": 50,
-    "word2vec": 128,
-}
 model_name = ['random', 'fasttext', 'glove', 'word2vec'][3]
 
 
@@ -64,7 +58,7 @@ class Config:
         self.hidden_size = 128
         self.direction = 2
         # the param of sentence embedding
-        self.sentence_length = sentence_length[word_vector]
+        self.sentence_length = 128
         self.embedding_dim = 300
         self.vocab_size = self.tokens2id.shape[0] + 1
 

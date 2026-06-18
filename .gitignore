@@ -213,7 +213,8 @@ NLP_HW/.idea/
 NLP_HW/__pycache__
 NLP_HW/model/
 NLP_HW/model_CNN/
-NLP_HW/rnn_test.py
+NLP_HW/model_RNN/
+NLP_HW/model_RNN_CNN/
 NLP_project/.idea/
 NLP_project/__pycache__/
 NLP_project/models/

@@ -14,10 +14,10 @@ hf download [model] --local-dir [model_dir]
 
 ## 模型评估
 
-|   Word_Vec   | Model | Accuracy | Model | Accuracy |   Model   | Accuracy |
-|:------------:|:-----:|:--------:|:-----:|:--------:|:---------:|:--------:|
-|    Random    |  CNN  |  43.80%  |  RNN  |  43.03%  | RNN + CNN |          |
-|   FastText   |  CNN  |  44.71%  |  RNN  |  44.57%  | RNN + CNN |          |
-|    Glove     |  CNN  |  46.92%  |  RNN  |  45.25%  | RNN + CNN |          |
-|   Word2Vec   |  CNN  |  48.73%  |  RNN  |  45.61%  | RNN + CNN |          |
-|     Bert     |  CNN  |  52.85%  |  RNN  |  51.31%  | RNN + CNN |          |
+| Word_Vec | Model | Accuracy | Model | Accuracy |
+|:--------:|:-----:|:--------:|:-----:|:--------:|
+|  Random  |  CNN  |  43.80%  |  RNN  |  43.03%  |
+| FastText |  CNN  |  44.71%  |  RNN  |  44.57%  |
+|  Glove   |  CNN  |  46.79%  |  RNN  |  45.20%  |
+| Word2Vec |  CNN  |  48.73%  |  RNN  |  45.61%  |
+|   BERT   |  CNN  |  52.85%  |  RNN  |  51.31%  |

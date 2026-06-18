@@ -3,8 +3,8 @@ from utils import process_dataset, test
 
 
 model_name_list = ['random', 'fasttext', 'glove', 'word2vec', 'bert']
-model_name = model_name_list[3]
-model_type = ["CNN", "RNN", "RNN_CNN"][1]
+model_name = model_name_list[0]
+model_type = ["CNN", "RNN", "RNN_CNN"][0]
 
 
 if model_name in model_name_list:
