@@ -60,7 +60,16 @@ class Model(nn.Module):
         return init_weight
 
     def word2vec_init(self):
-        init_weight = self.load_word2vec()
+        print("Word2Vec loading...")
+        words_vector = KeyedVectors.load_word2vec_format('model/googlenews.300d/GoogleNews-vectors-negative300.bin', binary=True)
+        tokens = self.config.tokens2id.index.tolist()
+        zero_init_weight = random_word_vector(self.config.embedding_dim, 0, 0)
+        init_weight = [zero_init_weight]
+        for token in tokens:
+            word_vector = words_vector[token] if token in words_vector else random_word_vector(
+                self.config.embedding_dim, 0, 0.1)
+            init_weight.append(word_vector)
+        print(f"Word2Vec load successfully, total {len(words_vector)}.")
         init_weight = np.array(init_weight)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
         self.embedding.weight.requires_grad = True

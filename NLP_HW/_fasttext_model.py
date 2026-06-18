@@ -23,7 +23,7 @@ class Config:
         self.num_classes = 5
         self.filter_size = [3, 4, 5]
         self.num_filters = 100
-        self.save_path = "model/fasttext_model.pth"
+        self.save_path = "model_CNN/fasttext_model.pth"
         self.mode = mode
         # the param of sentence embedding
         self.sentence_length = 64
@@ -62,7 +62,18 @@ class Model(nn.Module):
         return init_weight
 
     def fasttext_init(self):
-        init_weight = self.load_fasttext()
+        print("FastText loading...")
+        tokens = self.config.tokens2id.index.tolist()
+        zero_init_weight = random_word_vector(self.config.embedding_dim, 0, 0)
+        init_weight = [zero_init_weight]
+        model = fasttext.load_model("model/fasttext.300d/cc.en.300.bin")
+        for token in tokens:
+            try:
+                word_vector = model.get_word_vector(token)
+            except:
+                word_vector = np.array(random_word_vector(self.config.embedding_dim, 0, 0.1))
+            init_weight.append(word_vector)
+        print(f"FastText load successfully, total {len(model.get_words())}.")
         init_weight = np.array(init_weight)
         self.embedding.weight.data.copy_(torch.Tensor(init_weight))
         self.embedding.weight.requires_grad = True

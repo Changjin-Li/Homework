@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+------------------------------ CNN ------------------------------
 Loading weights: 100%|██████████| 199/199 [00:00<00:00, 15845.29it/s]
 [transformers] BertModel LOAD REPORT from: bert-base-uncased
 Key                                        | Status     |  |
@@ -35,5 +35,44 @@ Start Training Classifier...
 [19 / 20] 	loss: 0.0827, 	acc: 47.77%, 	use_time: 26.96s
 [20 / 20] 	loss: 0.0660, 	acc: 47.68%, 	use_time: 26.83s
 Finish Training. Best Accuracy: 49.68%.
-Test Accuracy: 52.71%.
-------------------------------------------------------------------------
+Test Accuracy: 52.08%.
+------------------------------ RNN ------------------------------
+Seed set to 42
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5479.47it/s]
+[transformers] BertModel LOAD REPORT from: model/bert-base-uncased
+Key                                        | Status     |  |
+-------------------------------------------+------------+--+-
+cls.predictions.bias                       | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED |  |
+cls.seq_relationship.weight                | UNEXPECTED |  |
+cls.seq_relationship.bias                  | UNEXPECTED |  |
+cls.predictions.transform.dense.bias       | UNEXPECTED |  |
+cls.predictions.transform.dense.weight     | UNEXPECTED |  |
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Start Training Classifier...
+[1 / 20] 	loss: 1.4409, 	acc: 44.41%, 	use_time: 24.49s
+[2 / 20] 	loss: 1.1809, 	acc: 42.14%, 	use_time: 23.97s
+[3 / 20] 	loss: 1.0335, 	acc: 47.59%, 	use_time: 24.71s
+[4 / 20] 	loss: 0.9001, 	acc: 45.96%, 	use_time: 22.67s
+[5 / 20] 	loss: 0.8041, 	acc: 47.05%, 	use_time: 20.53s
+[6 / 20] 	loss: 0.6790, 	acc: 50.05%, 	use_time: 21.28s
+[7 / 20] 	loss: 0.5667, 	acc: 48.41%, 	use_time: 20.82s
+[8 / 20] 	loss: 0.4682, 	acc: 49.23%, 	use_time: 20.73s
+[9 / 20] 	loss: 0.3879, 	acc: 47.68%, 	use_time: 20.63s
+[10 / 20] 	loss: 0.3346, 	acc: 47.68%, 	use_time: 22.48s
+[11 / 20] 	loss: 0.2821, 	acc: 46.96%, 	use_time: 24.09s
+[12 / 20] 	loss: 0.2508, 	acc: 46.14%, 	use_time: 24.05s
+[13 / 20] 	loss: 0.1997, 	acc: 46.50%, 	use_time: 24.00s
+[14 / 20] 	loss: 0.1763, 	acc: 45.96%, 	use_time: 24.28s
+[15 / 20] 	loss: 0.1750, 	acc: 47.50%, 	use_time: 24.19s
+[16 / 20] 	loss: 0.1486, 	acc: 47.50%, 	use_time: 24.15s
+[17 / 20] 	loss: 0.1311, 	acc: 47.59%, 	use_time: 23.17s
+[18 / 20] 	loss: 0.1353, 	acc: 46.50%, 	use_time: 20.66s
+[19 / 20] 	loss: 0.1035, 	acc: 47.32%, 	use_time: 20.56s
+[20 / 20] 	loss: 0.0956, 	acc: 45.78%, 	use_time: 20.71s
+Finish Training. Best Accuracy: 50.05%.
+Test Accuracy: 50.72%.
+------------------------------ RNN + CNN ------------------------------

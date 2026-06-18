@@ -2,31 +2,27 @@ import torch
 from utils import process_dataset, test
 
 
-model_name_list = ['random_model', 'fasttext_model', 'glove_model', 'word2vec_model', 'bert_model']
-model_name = model_name_list[0]
+model_name_list = ['random', 'fasttext', 'glove', 'word2vec', 'bert']
+model_name = model_name_list[4]
+model_type = ["CNN", "RNN", "RNN_CNN"][1]
 
 
-if model_name == 'random_model':
-    from _random_model import Model, Config
-elif model_name == 'fasttext_model':
-    from _fasttext_model import Model, Config
-elif model_name == 'glove_model':
-    from _glove_model import Model, Config
-elif model_name == 'word2vec_model':
-    from _word2vec_model import Model, Config
-elif model_name == 'bert_model':
-    from _bert_model import Model, Config
+if model_name in model_name_list:
+    if model_name == 'bert':
+        from train_BERT import Model, Config
+    else:
+        from train import Model, Config
 else:
     raise NotImplementedError
 
 
 def demo():
-    if "bert_model" in model_name:
-        config = Config()
+    if "bert" in model_name:
+        config = Config(net=model_type)
         model = Model(config)
         test_acc = model.test()
     else:
-        config = Config("test")
+        config = Config("test", model_name, model_type)
         model = Model(config).to(config.device)
         model.load_state_dict(torch.load(config.save_path, weights_only=True))
         test_data = process_dataset(config, 'dataset/test.csv')

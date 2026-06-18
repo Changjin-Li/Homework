@@ -10,7 +10,10 @@ import time
 
 
 class Config:
-    def __init__(self):
+    def __init__(self, mode = "train", word_vector = "bert", net = "CNN"):
+        self.net = net
+        self.mode = mode
+        self.word_vector = word_vector
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.seed = 42
         self.lr = 2e-5
@@ -20,8 +23,8 @@ class Config:
         self.num_workers = 8
         self.num_classes = 5
         self.max_length = 128
-        self.model_path = 'model/Bert/bert-base-uncased'
-        self.save_path = "model/bert_model_rnn.pth"
+        self.model_path = 'model/bert-base-uncased'
+        self.save_path = f"model_{net}/{word_vector}_model.pth"
         self.dropout = 0.3
         # CNN
         self.channels = 256
@@ -33,10 +36,10 @@ class Config:
 
 
 class BertClassifier(nn.Module):
-    def __init__(self, config, net = "cnn + rnn"):
+    def __init__(self, config):
         super().__init__()
         self.config = config
-        self.net = net
+        self.net = config.net
 
         self.bert = BertModel.from_pretrained(config.model_path)
         hidden_size = self.bert.config.hidden_size
@@ -49,7 +52,7 @@ class BertClassifier(nn.Module):
         )
 
         self.lstm = nn.LSTM(
-            input_size=config.channels if "cnn" in net else hidden_size,
+            input_size=config.channels if "CNN" in self.net else hidden_size,
             hidden_size=config.lstm_hidden_size,
             num_layers=config.lstm_num_layers,
             batch_first=True,
@@ -57,8 +60,8 @@ class BertClassifier(nn.Module):
             bidirectional=config.directions > 1,
         )
 
-        hidden_size = config.channels if "cnn" in net else hidden_size
-        hidden_size = config.lstm_hidden_size * config.directions if "rnn" in net else hidden_size
+        hidden_size = config.channels if "CNN" in self.net else hidden_size
+        hidden_size = config.lstm_hidden_size * config.directions if "RNN" in self.net else hidden_size
         self.fc = nn.Linear(hidden_size, config.num_classes)
 
         self.relu = nn.ReLU()
@@ -70,14 +73,14 @@ class BertClassifier(nn.Module):
         sequence_output = bert_output.last_hidden_state
 
         # ----- CNN -----
-        if "cnn" in self.net:
+        if "CNN" in self.net:
             cnn_input = sequence_output.permute(0, 2, 1)
             conv_output = self.conv(cnn_input)
             sequence_output = self.relu(conv_output)
             sequence_output = sequence_output.permute(0, 2, 1)
 
         # ----- LSTM -----
-        if "rnn" in self.net:
+        if "RNN" in self.net:
             sequence_output, (h_n, c_n) = self.lstm(sequence_output)
 
         # ----- FC -----
